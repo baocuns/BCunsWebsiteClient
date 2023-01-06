@@ -4,6 +4,8 @@ import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { CiPalette } from 'react-icons/ci'
 import { useRouter } from 'next/router'
+import { GetServerSidePropsContext } from 'next'
+
 
 type Props = {}
 
@@ -11,9 +13,15 @@ const Login = (props: Props) => {
 	const session = useSession()
 	const supabase = useSupabaseClient()
 	const router = useRouter()
-
+	
 	useEffect(() => {
-		session && router.push('/account')
+		if (session) {
+			if (router.query.redirect) {
+				router.push(`/${router.query.redirect}`)
+			} else {
+				router.push('/')
+			}
+		}
 	}, [router, session])
 
 	return (

@@ -1,15 +1,24 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable @next/next/no-img-element */
+import React, { useState, useEffect } from 'react'
 import { useUser, useSupabaseClient, Session } from '@supabase/auth-helpers-react'
-import type { Database } from '../../lib/database.types'
+
 type Profiles = Database['public']['Tables']['profiles']['Row']
 
-export default function Account({ session }: { session: Session }) {
+type Props = {
+	session: Session
+}
+
+
+
+export default function Account({ session }: Props) {
 	const supabase = useSupabaseClient<Database>()
 	const user = useUser()
 	const [loading, setLoading] = useState(true)
-	const [username, setUsername] = useState<Profiles['username']>(null)
-	const [sex, setsex] = useState<Profiles['sex']>(null)
-	const [avatar_url, setAvatarUrl] = useState<Profiles['avatar_url']>(null)
+	
+
+	const [username, setUsername] = useState<Profiles['bcuns_id']>(undefined)
+	const [sex, setsex] = useState<Profiles['story']>(undefined)
+	const [avatar_url, setAvatarUrl] = useState<Profiles['avatar_url']>()
 
 	useEffect(() => {
 		getProfile()
@@ -22,7 +31,7 @@ export default function Account({ session }: { session: Session }) {
 
 			let { data, error, status } = await supabase
 				.from('profiles')
-				.select(`username, sex, avatar_url`)
+				.select()
 				.eq('uid', user.id)
 				.single()
 
@@ -31,10 +40,8 @@ export default function Account({ session }: { session: Session }) {
 			}
 
 			if (data) {
-				console.log('data: ', data);
-				
-				setUsername(data.username)
-				setsex(data.sex)
+				setUsername(data.bcuns_id)
+				setsex(data.story)
 				setAvatarUrl(data.avatar_url)
 			}
 		} catch (error) {
@@ -50,8 +57,8 @@ export default function Account({ session }: { session: Session }) {
 		sex,
 		avatar_url,
 	}: {
-		username: Profiles['username']
-		sex: Profiles['sex']
+		username: Profiles['bcuns_id']
+		sex: Profiles['story']
 		avatar_url: Profiles['avatar_url']
 	}) {
 		try {
@@ -77,46 +84,60 @@ export default function Account({ session }: { session: Session }) {
 		}
 	}
 
+	
+
+	
+
 	return (
-		<div className="form-widget">
-			<div>
-				<label htmlFor="email">Email</label>
-				<input id="email" type="text" value={session.user.email} disabled />
-			</div>
-			<div>
-				<label htmlFor="username">Username</label>
-				<input
-					id="username"
-					type="text"
-					value={username || ''}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
-			</div>
-			<div>
-				<label htmlFor="sex">sex</label>
-				<input
-					id="sex"
-					type="sex"
-					value={sex || ''}
-					onChange={(e) => setsex(e.target.value)}
-				/>
-			</div>
+		<>
+			<div className="mt-4">
+							<div className="form-widget">
+								<div>
+									<label htmlFor="email">Email</label>
+									<input id="email" type="text" value={session.user.email} disabled />
+								</div>
+								<div>
+									<label htmlFor="username">Username</label>
+									<input
+										id="username"
+										type="text"
+										value={username || ''}
+										onChange={(e) => setUsername(e.target.value)}
+									/>
+								</div>
+								<div>
+									<label htmlFor="sex">sex</label>
+									<input
+										id="sex"
+										type="sex"
+										value={sex || ''}
+										onChange={(e) => setsex(e.target.value)}
+									/>
+								</div>
 
-			<div>
-				<button
-					className="button primary block"
-					onClick={() => updateProfile({ username, sex, avatar_url })}
-					disabled={loading}
-				>
-					{loading ? 'Loading ...' : 'Update'}
-				</button>
-			</div>
+								<div>
+									<button
+										className="button primary block"
+										onClick={() => updateProfile({ username, sex, avatar_url })}
+										disabled={loading}
+									>
+										{loading ? 'Loading ...' : 'Update'}
+									</button>
+								</div>
 
-			<div>
-				<button className="button block" onClick={() => supabase.auth.signOut()}>
-					Sign Out
-				</button>
-			</div>
-		</div>
+								<div>
+									<button className="button block" onClick={() => supabase.auth.signOut()}>
+										Sign Out
+									</button>
+								</div>
+							</div>
+						</div>
+			{/* danh dach truyen tranh sx={{ width: '100%' }} */}
+
+			
+		</>
 	)
 }
+
+// -------------------------------------------- Server-side rendering (SSR) -----------------------------------
+
