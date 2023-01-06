@@ -1,4 +1,4 @@
-export type Json =
+type Json =
   | string
   | number
   | boolean
@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json }
   | Json[];
 
-export interface Database {
+interface Database {
   public: {
     Tables: {
       users: {
@@ -216,52 +216,32 @@ export interface Database {
       };
       profiles: {
         Row: {
-            id: string;
-            username: string | null
-            first_name: string | null
-            last_name: string | null
-            full_name: string | null
-            sex: string | null
-            province: string | null
-            id_passport: string | null
-            date_range: Date | null
-            issued_by: string | null
-            avatar_url: string | null
+            id: number
+            uid: string
+            bcuns_id: string | string[] | undefined
+            full_name: string | undefined
+            story: string | undefined
+            avatar_url: string | undefined
             is_block: boolean
-            is_public: boolean
-            ci_id: string
+            is_public: number
           };
           Insert: {
             id: string;
-            username?: string | null
-            first_name?: string | null
-            last_name?: string | null
+            bcuns_id?: string | null
             full_name?: string | null
-            sex?: string | null
-            province?: string | null
-            id_passport?: string | null
-            date_range?: Date | null
-            issued_by?: string | null
+            story?: string | null
             avatar_url?: string | null
             is_block?: boolean
-            is_public?: boolean
-            ci_id?: string
+            is_public?: number
           };
           Update: {
             id: string;
-            username?: string | null
-            first_name?: string | null
-            last_name?: string | null
+            bcuns_id?: string | null
             full_name?: string | null
-            sex?: string | null
-            province?: string | null
-            id_passport?: string | null
-            date_range?: Date | null
-            issued_by?: string | null
+            story?: string | null
             avatar_url?: string | null
             is_block?: boolean
-            is_public?: boolean
-            ci_id?: string
+            is_public?: number
           };
       }
     };

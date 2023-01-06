@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from 'next/head'
 import React from 'react'
-import Components from '../../src/components'
-import { Comic } from '../../src/types/comic'
+import { GridCardList, Pagination } from '../../src/components'
 
 type Props = {}
 
@@ -111,9 +110,9 @@ const Comics = (props: Props) => {
 			<main className="px-4 py-4 sm:px-8">
 				<div>
 					{/* list */}
-					<Components.GridCardList list={products} />
+					<GridCardList list={products} />
 					{/* pagination */}
-					<Components.Pagination />
+					<Pagination />
 				</div>
 			</main>
 		</div>

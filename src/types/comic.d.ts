@@ -1,6 +1,6 @@
 
 
-export interface Comic {
+interface Comic {
 	id: number
 	name: string
 	href: string
