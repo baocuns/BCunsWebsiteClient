@@ -1,15 +1,10 @@
 import { useTheme } from 'next-themes'
 import Head from 'next/head'
 import * as React from 'react'
-// import { useSelector, useDispatch } from 'react-redux'
-// import { decrement, increment, selectValue } from '../src/redux/slices/counterSlice'
-
 
 export interface IHomeProps {}
 
 export default function Home(props: IHomeProps) {
-	// const count = useSelector(selectValue)
-	// const dispatch = useDispatch()
 
 	return (
 		<>
