@@ -245,24 +245,24 @@ interface Database {
           };
       }
     };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
-    };
-    Enums: {
-      content_access_role: 'free' | 'basic' | 'premium';
-      pricing_type: 'one_time' | 'recurring';
-      pricing_plan_interval: 'day' | 'week' | 'month' | 'year';
-      subscription_status:
-        | 'trialing'
-        | 'active'
-        | 'canceled'
-        | 'incomplete'
-        | 'incomplete_expired'
-        | 'past_due'
-        | 'unpaid';
-    };
+    // Views: {
+    //   [_ in never]: never;
+    // };
+    // Functions: {
+    //   [_ in never]: never;
+    // };
+    // Enums: {
+    //   content_access_role: 'free' | 'basic' | 'premium';
+    //   pricing_type: 'one_time' | 'recurring';
+    //   pricing_plan_interval: 'day' | 'week' | 'month' | 'year';
+    //   subscription_status:
+    //     | 'trialing'
+    //     | 'active'
+    //     | 'canceled'
+    //     | 'incomplete'
+    //     | 'incomplete_expired'
+    //     | 'past_due'
+    //     | 'unpaid';
+    // };
   };
 }

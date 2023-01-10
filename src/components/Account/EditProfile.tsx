@@ -1,12 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CiEdit } from 'react-icons/ci'
 import { BsCheck2, BsX } from 'react-icons/bs'
 import TextareaAutosize from 'react-textarea-autosize'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import axios from 'axios'
+import { storageClient } from '../../config/supabse'
+import { useDispatch } from 'react-redux'
+import { callApiStart, callApiSuccess } from '../../redux/slices/apiSlice'
+import { useRouter } from 'next/router'
 
 type Profiles = Database['public']['Tables']['profiles']['Row']
 
@@ -17,9 +20,13 @@ type Props = {
 }
 
 const EditProfile = (props: Props) => {
+	const router = useRouter()
+	const dispatch = useDispatch()
 	const supabase = useSupabaseClient<Database>()
 
+	const [avatarUrl, setAvatarUrl] = useState<string>()
 	const [profile, setProfile] = useState<Profiles>(props.profile)
+	const [profileOld, setProfileOld] = useState<Profiles>(props.profile)
 	const handleProfileChange = (
 		event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
 	) => {
@@ -31,7 +38,7 @@ const EditProfile = (props: Props) => {
 		}))
 	}
 
-	// modals
+	// modals: open and close
 	const cancelButtonRef = useRef(null)
 	const handleCloseModals = () => {
 		props.handleCallback()
@@ -44,33 +51,84 @@ const EditProfile = (props: Props) => {
 			setFile(files[0])
 
 			const url: string = URL.createObjectURL(files[0])
-
-			setProfile((prev) => ({
-				...prev,
-				['avatar_url']: url,
-			}))
+			setAvatarUrl(url)
 		}
 	}
 
-	//upload photo
-	const handleUploadPhoto = async () => {
+	// ------------------------ Submit update profile
+	const handleSubmitUpdateProfile = () => {
+		dispatch(callApiStart())
 		if (file) {
-			// const formData = new FormData()
-			// formData.append('file', file)
-			// formData.append('upload_preset', 'profiles')
-			// const data = await axios.post('https://api.cloudinary.com/v1_1/dykcbmulk/image/upload', formData)
-
-			const { data, error } = await supabase.storage
+			storageClient
 				.from('profiles')
-				.upload(`avatars/${profile.bcuns_id}`, file) //.${file.name.split('.')[1]}
-				// .remove(['avatars/baocuns.jpg'])
-				// .update('avatars/baocuns.jpg', file)
-
-			console.log('data: ', data)
+				.upload(`${profile.uid}/avatar`, file, {
+					upsert: true,
+				})
+				.then(({ data, error }) => {
+					if (data) {
+						const pf = {
+							...profile,
+							['updated_at']: new Date().toISOString(),
+						}
+						supabase
+							.from('profiles')
+							.update(pf)
+							.eq('id', pf.id)
+							.then((res) => {
+								console.log('res: if', res)
+								dispatch(callApiSuccess(res))
+								handleCloseModals()
+								router.push(`/${pf.bcuns_id}`)
+							})
+					}
+				})
 		} else {
-			alert('seelect photo')
+			const pf = {
+				...profile,
+				['updated_at']: new Date().toISOString(),
+			}
+			supabase
+				.from('profiles')
+				.update(pf)
+				.eq('id', pf.id)
+				.then((res) => {
+					console.log('res: ', res)
+					dispatch(callApiSuccess(res))
+					handleCloseModals()
+					router.push(`/${pf.bcuns_id}`)
+				})
 		}
 	}
+
+	// check bcuns id on change
+	const [isBcunsId, setIsBcunsId] = useState<boolean>(true)
+	const [isLoad, setIsLoad] = useState<boolean>(false)
+	useEffect(() => {
+		var timer: string | number | NodeJS.Timeout | undefined = 0
+		if (profile.bcuns_id !== profileOld.bcuns_id) {
+			timer = setTimeout(() => {
+				setIsLoad(true)
+				supabase
+					.from('profiles')
+					.select()
+					.eq('bcuns_id', profile.bcuns_id)
+					.single()
+					.then(({ data, error }) => {
+						if (error) {
+							setIsBcunsId(true)
+						}
+						if (data) {
+							setIsBcunsId(false)
+						}
+						setIsLoad(false)
+					})
+			}, 1000)
+		}
+
+		return () => {
+			clearTimeout(timer)
+		}
+	}, [profile.bcuns_id, profileOld.bcuns_id, supabase])
 
 	return (
 		<Transition.Root show={props.open} as={Fragment}>
@@ -123,12 +181,13 @@ const EditProfile = (props: Props) => {
 									</div>
 								</div>
 								<div className="px-4 pb-4">
+									{/* avatar */}
 									<div className="py-2">
 										<div className="font-medium border-b mb-4 text-black">Ảnh hồ sơ</div>
 										<div className="flex justify-center">
 											<div className="group relative max-w-max cursor-pointer">
 												<img
-													src={profile.avatar_url}
+													src={file ? avatarUrl : profile.avatar_url}
 													alt={profile.full_name}
 													className="shadow h-44 w-32 group-hover:shadow-xl rounded"
 												/>
@@ -153,17 +212,11 @@ const EditProfile = (props: Props) => {
 												</div>
 											</div>
 										</div>
-										<button
-											type="button"
-											className="bg-gray-200 mx-4 p-2"
-											onClick={handleUploadPhoto}
-										>
-											Upload
-										</button>
 									</div>
+									{/* bcuns id */}
 									<div className="py-2">
 										<div className="font-medium border-b mb-2 text-black">BCuns ID</div>
-										<div className="flex justify-center">
+										<div className="flex justify-center items-center">
 											<p className="text-lg text-black font-medium">@</p>
 											<TextareaAutosize
 												name="bcuns_id"
@@ -173,8 +226,33 @@ const EditProfile = (props: Props) => {
 												placeholder="BCuns ID"
 											/>
 											<div className="flex items-center">
-												<BsCheck2 size={24} color={'green'} />
-												<BsX size={28} color={'red'} />
+												{isLoad && (
+													<svg
+														className="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500"
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+													>
+														<circle
+															className="opacity-25"
+															cx="12"
+															cy="12"
+															r="10"
+															stroke="currentColor"
+															strokeWidth="4"
+														></circle>
+														<path
+															className="opacity-75"
+															fill="currentColor"
+															d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+														></path>
+													</svg>
+												)}
+												{isBcunsId ? (
+													<BsCheck2 size={24} color={'green'} />
+												) : (
+													<BsX size={28} color={'red'} />
+												)}
 											</div>
 										</div>
 										<div className="px-6 py-2">
@@ -186,6 +264,7 @@ const EditProfile = (props: Props) => {
 											</div>
 										</div>
 									</div>
+									{/* full name */}
 									<div className="py-2">
 										<div className="font-medium border-b mb-2 text-black">Họ Tên</div>
 										<div className="px-8 sm:px-16">
@@ -206,6 +285,7 @@ const EditProfile = (props: Props) => {
 											</div>
 										</div>
 									</div>
+									{/* story */}
 									<div className="py-2">
 										<div className="font-medium border-b mb-2 text-black">Tiểu sử</div>
 										<div className="px-8 sm:px-16">
@@ -245,7 +325,7 @@ const EditProfile = (props: Props) => {
 									<button
 										type="button"
 										className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-										onClick={handleCloseModals}
+										onClick={handleSubmitUpdateProfile}
 									>
 										Cập Nhật
 									</button>
@@ -268,46 +348,3 @@ const EditProfile = (props: Props) => {
 }
 
 export default EditProfile
-
-{
-	/* <div className="form-widget">
-			<div>
-				<label htmlFor="email">Email</label>
-				<input id="email" type="text" value={session.user.email} disabled />
-			</div>
-			<div>
-				<label htmlFor="username">Username</label>
-				<input
-					id="username"
-					type="text"
-					value={username || ''}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
-			</div>
-			<div>
-				<label htmlFor="sex">sex</label>
-				<input
-					id="sex"
-					type="sex"
-					value={sex || ''}
-					onChange={(e) => setsex(e.target.value)}
-				/>
-			</div>
-
-			<div>
-				<button
-					className="button primary block"
-					onClick={() => updateProfile({ username, sex, avatar_url })}
-					disabled={loading}
-				>
-					{loading ? 'Loading ...' : 'Update'}
-				</button>
-			</div>
-
-			<div>
-				<button className="button block" onClick={() => supabase.auth.signOut()}>
-					Sign Out
-				</button>
-			</div>
-		</div> */
-}

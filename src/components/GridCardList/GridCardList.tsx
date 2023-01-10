@@ -16,9 +16,9 @@ const GridCardList: React.FC<Props> = ({ list }) => {
 					<div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-x-8">
 						{list.length !== 0
 							? list.map((element) => (
-									<div key={element.id} className="p-1 shadow dark:shadow-gray-700 rounded">
+									<div key={element.id} className="shadow dark:shadow-gray-700 rounded">
 										<div className="group relative">
-											<div className="h-60 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-72 xl:h-64">
+											<div className="h-60 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-72 xl:h-64">
 												<img
 													src={element.imageSrc}
 													alt={element.imageAlt}
