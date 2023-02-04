@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import { useState } from 'react'
-import { useSession } from '@supabase/auth-helpers-react'
+import { useEffect, useState } from 'react'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { GridCardList, LinkTab, ProfileDetails, TabPanel } from '../../src/components'
 import { BsJournalAlbum } from 'react-icons/bs'
@@ -8,6 +8,8 @@ import { Box, Tabs } from '@mui/material'
 import { GetServerSidePropsContext } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import Link from 'next/link'
+import { useDispatch } from 'react-redux'
+import { callApiStart, callApiSuccess } from '../../src/redux/slices/apiSlice'
 
 type Profiles = Database['public']['Tables']['profiles']['Row']
 
@@ -16,6 +18,7 @@ type Props = {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+
 	// Create authenticated Supabase Client
 	const supabase = createServerSupabaseClient(context)
 	const bcuns_id: string | string[] | undefined = context.params?.bcuns_id
@@ -30,9 +33,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Home(props: Props) {
+	const supabase = useSupabaseClient<Database>()
 	const profile: Profiles = props.data
 	const session = useSession()
 	const router = useRouter()
+	const dispatch = useDispatch()
 	// const bcuns_id: string | string[] | undefined = router.query.account
 
 	// tablist
@@ -43,98 +48,26 @@ export default function Home(props: Props) {
 
 	// console.log('router.query', router.query.account)
 
-	const products: Array<Comic> = [
-		{
-			id: 1,
-			name: 'TA KHÔNG PHẢI CON CƯNG CỦA KHÍ VẬN',
-			href: '/comics/ta-khong-phai-con-cung-cua-khi-van',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/203/ta-khong-phai-con-cung-cua-khi-van.jpg',
-			imageAlt: 'TA KHÔNG PHẢI CON CƯNG CỦA KHÍ VẬN',
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 2,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/89/chuong-mon-khiem-ton-chut.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 3,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/227/bat-dau-tho-lo-voi-my-nu-su-ton.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 4,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/46/nhap-hon-ma-dao-to-su.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 5,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/146/nguyen-ton.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 6,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/217/ta-co-mot-son-trai.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 7,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/71/tam-nhan-hao-thien-luc.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 8,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/228/vo-dao-doc-ton-7886.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 9,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/141/tien-vo-de-ton.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-		{
-			id: 10,
-			name: 'Basic Tee',
-			href: '#',
-			imageSrc: 'https://st.ntcdntempv3.com/data/comics/117/nguyen-lai-ta-la-tu-tien-dai-lao.jpg',
-			imageAlt: "Front of men's Basic Tee in black.",
-			view: '1000',
-			chapter: 'chapter-100',
-		},
-	]
+	const [comics, setComics] = useState<Array<
+		Database['public']['Tables']['comics']['Row']
+	> | null>()
+
+	useEffect(() => {
+		const func = async () => {
+			dispatch(callApiStart())
+			let { data: comics, error } = await supabase
+				.from('comics')
+				.select(`*, chapters(*)`)
+				.range(0, 11)
+
+			console.log('data: ', comics)
+			console.log('error: ', error)
+
+			setComics(comics)
+			dispatch(callApiSuccess(true))
+		}
+		func()
+	}, [])
 
 	return (
 		<>
@@ -156,17 +89,19 @@ export default function Home(props: Props) {
 								</Tabs>
 							</Box>
 							<TabPanel value={value} index={0}>
-								<GridCardList list={products} />
+								<GridCardList list={comics} />
 							</TabPanel>
 						</Box>
 					</>
 				) : (
 					<>
-						<div className='h-screen w-full flex items-center justify-center'>
-							<h1 className='text-2xl font-medium pr-2 py-2 border-r-2'>404</h1>
-							<p className='px-2'>This <b>bcuns id</b> could not be found.</p>
+						<div className="h-screen w-full flex items-center justify-center">
+							<h1 className="text-2xl font-medium pr-2 py-2 border-r-2">404</h1>
+							<p className="px-2">
+								This <b>bcuns id</b> could not be found.
+							</p>
 							<Link href={'/'}>
-								<u className='text-red-500 hover:text-red-600'>Go Home</u>
+								<u className="text-red-500 hover:text-red-600">Go Home</u>
 							</Link>
 						</div>
 					</>

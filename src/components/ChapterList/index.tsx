@@ -1,63 +1,49 @@
 import React from 'react'
 import Link from 'next/link'
-import { CiCircleList, CiRead } from 'react-icons/ci'
+import { CiRead } from 'react-icons/ci'
+import { VscListSelection } from 'react-icons/vsc'
+import dayjs from 'dayjs'
+import { numberFormat } from '../../lib'
+import { useRouter } from 'next/router'
 
-type Props = {}
+type Props = {
+	chapters: Array<Database['public']['Tables']['chapters']['Row']>
+}
 
 const ChapterList = (props: Props) => {
+	const { chapters } = props
+	const router = useRouter()
+
 	return (
 		<div>
-			<div className="mx-auto mt-6 max-w-4xl px-6 sm:max-w-7xl sm:px-8">
+			<div className="mx-auto mt-6 md:max-w-7xl md:px-8">
 				<div className="flex font-medium items-center border-b py-1">
 					<div className="mr-2">
-						<CiCircleList size={18} />
+						<VscListSelection size={24} color="red" />
 					</div>
-					<div className='text-xl'>Danh sách chương</div>
+					<div className="text-xl">Danh sách chương</div>
 				</div>
 				{/* danh sach chuong */}
-				<div className="px-4">
-					<Link href={'#'}>
-						<div className="grid grid-cols-3 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out">
-							<div className=''>Chương 1</div>
-							<div className="font-thin">
-								<i>23 giờ trước</i>
-							</div>
-							<div className="flex items-center">
-								<div className="mr-2">21k</div>
-								<div>
-									<CiRead size={18} />
+				<div className="md:px-4">
+					{chapters.map((e, i) => (
+						<Link href={`${router.asPath}/chapter/${e.id}`} key={i}>
+							<div className="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700">
+								<h1 className="flex items-center text-sm md:text-base col-span-2 md:col-auto">{e.title}</h1>
+								<div className="font-thin flex items-center">
+									<i>{dayjs(e.created_at).fromNow()}</i>
+								</div>
+								<div className="flex items-center">
+									<div className="mr-2">{numberFormat(e.view, 1)}</div>
+									<div>
+										<CiRead size={18} />
+									</div>
+								</div>
+								<div className='hidden md:inline'>
+									<p className="line-clamp-2">{e.description}</p>
 								</div>
 							</div>
-						</div>
-					</Link>
-					<Link href={'#'}>
-						<div className="grid grid-cols-3 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out">
-							<div>Chương 1</div>
-							<div className="font-thin">
-								<i>23 giờ trước</i>
-							</div>
-							<div className="flex items-center">
-								<div className="mr-2">21k</div>
-								<div>
-									<CiRead size={18} />
-								</div>
-							</div>
-						</div>
-					</Link>
-					<Link href={'#'}>
-						<div className="grid grid-cols-3 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out">
-							<div>Chương 1</div>
-							<div className="font-thin">
-								<i>23 giờ trước</i>
-							</div>
-							<div className="flex items-center">
-								<div className="mr-2">21k</div>
-								<div>
-									<CiRead size={18} />
-								</div>
-							</div>
-						</div>
-					</Link>
+						</Link>
+					))}
 				</div>
 			</div>
 		</div>

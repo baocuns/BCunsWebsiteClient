@@ -7,6 +7,7 @@ import LinkTab from './Tabs/LinkTab'
 import TabPanel from './Tabs/TabPanel'
 import ProfileDetails from './Account/ProfileDetails'
 import Loading from './Loading'
+import TitleLink from './GridCardList/TitleLink'
 
 export {
     ChapterList,
@@ -18,4 +19,5 @@ export {
     TabPanel,
     ProfileDetails,
     Loading,
+    TitleLink,
 }

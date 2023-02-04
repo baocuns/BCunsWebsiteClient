@@ -35,7 +35,7 @@ const Headers = (props: Props) => {
 	return (
 		<>
 			<div className="w-full h-12">
-				<div className="flex fixed h-12 w-full bg-white dark:bg-gray-800 z-10 content-center px-4 sm:px-8">
+				<div className="flex fixed h-12 w-full bg-white dark:bg-gray-800 z-50 content-center px-4 sm:px-8">
 					<div className="flex w-1/6 items-center">
 						<button type="button" className="hover:text-green-500">
 							<CiGrid41 size={24} />

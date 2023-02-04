@@ -14,55 +14,59 @@ import {
 	CiUser,
 } from 'react-icons/ci'
 import Link from 'next/link'
+import dayjs from 'dayjs'
+import { numberFormat } from '../../lib'
 
-type Props = {}
+type Props = {
+	comic: Database['public']['Tables']['comics']['Row']
+}
 
 const DetailsComic = (props: Props) => {
+	const { comic } = props
+
 	return (
 		<div>
 			<div className="mx-auto mt-6 max-w-4xl px-6 grid grid-cols-1 sm:max-w-7xl sm:grid-cols-4 sm:gap-x-8 sm:px-8">
-				<div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg sm:aspect-w-3 sm:aspect-h-4">
+				<div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:aspect-w-3 sm:aspect-h-4 rounded">
 					<img
-						src={
-							'https://st.ntcdntempv3.com/data/comics/203/ta-khong-phai-con-cung-cua-khi-van.jpg'
-						}
-						alt={'product.images[3].alt'}
-						className="h-full w-full object-cover object-center"
+						src={comic.thumbnails}
+						alt={comic.title}
+						className="h-full w-full object-cover object-center rounded"
 					/>
 				</div>
 				<div className="col-span-3">
 					<div className="mt-8 sm:mt-2">
-						<div className="text-2xl font-semibold">TA KHÔNG PHẢI CON CƯNG CỦA KHÍ VẬN</div>
+						<div className="text-2xl font-semibold">{comic.title}</div>
 						<div className="flex font-light mt-4">
 							<div className="mx-2 flex items-center">
 								<CiTimer size={18} />
 							</div>
-							<div>14:39 29/12/2022</div>
+							<div>{dayjs(comic.updated_at).fromNow()}</div>
 						</div>
 						<div className="flex font-light">
 							<div className="mx-2 flex items-center">
 								<CiSignpostR1 size={18} />
 							</div>
-							<div>14:39 29/12/2019</div>
+							<div>{dayjs(comic.created_at).format('DD/MM/YYYY')}</div>
 						</div>
 						<div className="flex">
 							<div className="flex font-light mr-4">
 								<div className="mx-2 flex items-center">
 									<CiRead size={18} />
 								</div>
-								<div>213k</div>
+								<div>{numberFormat(comic.view, 1)}</div>
 							</div>
 							<div className="flex font-light mr-4">
 								<div className="mx-2 flex items-center">
 									<CiHeart size={18} />
 								</div>
-								<div>21k</div>
+								<div>{numberFormat(comic.like.length, 1)}</div>
 							</div>
 							<div className="flex font-light mr-4">
 								<div className="mx-2 flex items-center">
 									<CiSignpostDuo1 size={18} />
 								</div>
-								<div>180 chapter</div>
+								<div>{comic.chapters.length} chapter</div>
 							</div>
 						</div>
 						<div className="flex font-light">
@@ -81,7 +85,7 @@ const DetailsComic = (props: Props) => {
 												</div>
 											))}
 										</div>
-										<p className="mx-2">4.5 stars</p>
+										<p className="mx-2">{comic.rating} stars</p>
 										<a
 											href={'reviews.href'}
 											className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
@@ -96,7 +100,7 @@ const DetailsComic = (props: Props) => {
 							<div className="mx-2 flex items-center">
 								<CiUser size={18} />
 							</div>
-							<div className="text-red-600 font-medium">Admin</div>
+							<div className="text-red-600 font-medium">{comic.author}</div>
 						</div>
 						<div className="flex font-light">
 							<div className="mx-2 flex items-center">
@@ -109,13 +113,8 @@ const DetailsComic = (props: Props) => {
 								<CiMemoPad size={18} />
 							</div>
 							<div className="line-clamp-2">
-								Sau khi xuyên qua thế giới tu tiên bất tử, Thẩm Thiên nhận thấy rằng mình có thể
-								nhìn thấy quầng sáng may mắn và xui xẻo trên đầu của người khác. Để xua đuổi hào
-								quang xui xẻo đen như nhọ nồi bay lơ lửng trên đầu của mình, hắn tìm mọi cách kết
-								giao với những người may mắn Sau khi xuyên qua thế giới tu tiên bất tử, Thẩm Thiên
-								nhận thấy rằng mình có thể nhìn thấy quầng sáng may mắn và xui xẻo trên đầu của
-								người khác. Để xua đuổi hào quang xui xẻo đen như nhọ nồi bay lơ lửng trên đầu của
-								mình, hắn tìm mọi cách kết giao với những người may mắn
+								<p>{comic.description}</p>
+								<p>Xem Thêm</p>
 							</div>
 						</div>
 						<div className="flex flex-col sm:flex-row font-normal mt-4 justify-center sm:justify-start">

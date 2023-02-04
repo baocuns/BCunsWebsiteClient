@@ -1,11 +1,15 @@
 
 
-interface Comic {
-	id: number
-	name: string
-	href: string
-	imageSrc: string
-	imageAlt: string
-	view: string
-	chapter: string
-}
+// interface Comic {
+// 	id: number
+// 	uid: string
+// 	title: string
+// 	view: Json
+// 	like: Json
+// 	author: string
+// 	categories: Json
+// 	description: string
+// 	thumbnails: string
+// 	created_at: string
+// 	update_at: string
+// }
