@@ -8,6 +8,7 @@ import TabPanel from './Tabs/TabPanel'
 import ProfileDetails from './Account/ProfileDetails'
 import Loading from './Loading'
 import TitleLink from './GridCardList/TitleLink'
+import Search from './Search'
 
 export {
     ChapterList,
@@ -20,4 +21,5 @@ export {
     ProfileDetails,
     Loading,
     TitleLink,
+    Search,
 }

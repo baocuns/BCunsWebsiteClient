@@ -7,7 +7,7 @@ type Jsonb =
 	| Jsonb[]
 	| Array<string>
 	| Array<number>
-type Json = Array<string> | Array<number> | string | Json[] | { [key: string]: Jsonb; length }
+type Json = Array<string> | Array<number> | string | Json[] | { [key: string]: Jsonb; length: number }
 
 interface Database {
 	public: {
@@ -257,7 +257,8 @@ interface Database {
 					comic_id: string
 					title: string
 					description: string
-					view: number
+					view: Array<string>
+					version: number
 					created_at: string
 				}
 			}
