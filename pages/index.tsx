@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useTheme } from 'next-themes'
 import Head from 'next/head'
+import Link from 'next/link'
 import * as React from 'react'
 
 export interface IHomeProps {}
@@ -55,10 +56,10 @@ export default function Home(props: IHomeProps) {
 						<div className="hidden sm:mb-8 sm:flex sm:justify-center">
 							<div className="relative rounded-full py-1 px-3 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
 								Announcing our next round of funding.{' '}
-								<a href="#" className="font-semibold text-indigo-600">
+								<Link href="#" className="font-semibold text-indigo-600">
 									<span className="absolute inset-0" aria-hidden="true" />
 									Read more <span aria-hidden="true">&rarr;</span>
-								</a>
+								</Link>
 							</div>
 						</div>
 						<div className="text-center">
@@ -70,15 +71,15 @@ export default function Home(props: IHomeProps) {
 								commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
 							</p>
 							<div className="mt-10 flex items-center justify-center gap-x-6">
-								<a
+								<Link
 									href="#"
 									className="rounded-md bg-indigo-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 								>
 									Get started
-								</a>
-								<a href="#" className="text-base font-semibold leading-7 text-gray-900">
+								</Link>
+								<Link href="#" className="text-base font-semibold leading-7 text-gray-900">
 									Learn more <span aria-hidden="true">→</span>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
