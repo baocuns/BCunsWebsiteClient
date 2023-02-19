@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useEffect, useState, Fragment } from 'react'
 import { useTheme } from 'next-themes'
-import { CiBellOn, CiChat2, CiGrid41, CiLogin, CiLogout, CiSearch } from 'react-icons/ci'
+import { CiBellOn, CiChat2, CiGrid41, CiLogin, CiLogout, CiSearch, CiUser } from 'react-icons/ci'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -24,6 +24,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
+import OptionsBar from './optionsbar'
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
@@ -97,6 +98,15 @@ const recentPosts = [
 	{ id: 3, name: 'Improve your customer experience', href: '#' },
 ]
 
+const profiles = [
+	{
+		name: 'Light/Dark',
+		description: 'Adjust the light your way!',
+		href: '#',
+		icon: ChartBarIcon,
+	},
+]
+
 type Props = {}
 
 const Headers = (props: Props) => {
@@ -143,21 +153,24 @@ const Headers = (props: Props) => {
 				>
 					<Popover className="relative bg-transparent">
 						<div className="mx-auto max-w-7xl px-6">
-							<div className="flex items-center justify-between py-3 lg:justify-start lg:space-x-10">
+							<div className="flex items-center justify-between py-3 md:justify-start md:space-x-10">
 								{/* logo */}
-								<div className="flex justify-start lg:w-0 lg:flex-1">
+								<div className="flex justify-start md:w-0 md:flex-1">
 									<Link href={'/'}>
 										<span className="sr-only">Your Company</span>
 										<img className="h-8 w-auto sm:h-10 rounded" src="/images/BC.png" alt="BCuns" />
 									</Link>
 								</div>
-								<div className="-my-2 -mr-2 lg:hidden">
-									<Popover.Button className="inline-flex items-center justify-center rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+								<div className="-my-2 -mr-2 md:hidden flex">
+									{/* option bar */}
+									<OptionsBar />
+
+									<Popover.Button className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
 										<span className="sr-only">Open menu</span>
 										<CiGrid41 size={24} />
 									</Popover.Button>
 								</div>
-								<Popover.Group as="nav" className="hidden space-x-10 lg:flex">
+								<Popover.Group as="nav" className="hidden space-x-10 md:flex">
 									<Popover className="relative">
 										{({ open }) => (
 											<>
@@ -186,7 +199,7 @@ const Headers = (props: Props) => {
 													leaveFrom="opacity-100 translate-y-0"
 													leaveTo="opacity-0 translate-y-1"
 												>
-													<Popover.Panel className="absolute z-0 -ml-4 mt-3 w-screen max-w-lg transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+													<Popover.Panel className="absolute z-0 -ml-4 mt-3 w-screen max-w-lg transform px-2 sm:px-0 md:left-1/2 md:ml-0 md:-translate-x-1/2">
 														<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
 															<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
 																{solutions.map((item) => (
@@ -238,7 +251,10 @@ const Headers = (props: Props) => {
 											Comics
 										</p>
 									</Link>
-									<Link href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
+									<Link
+										href="#"
+										className="text-base font-medium text-gray-500 hover:text-gray-900"
+									>
 										Docs
 									</Link>
 
@@ -329,46 +345,10 @@ const Headers = (props: Props) => {
 										)}
 									</Popover>
 								</Popover.Group>
-								<div className="hidden items-center justify-end lg:flex lg:flex-1 lg:w-0">
-									<div className="flex items-center">
-										<button
-											type="button"
-											className="hover:text-green-500 p-1"
-											onClick={handleOpenSearch}
-										>
-											<CiSearch size={24} />
-										</button>
-									</div>
-									<button type="button" className="hover:text-green-500 p-1 mx-1">
-										<CiBellOn size={24} />
-									</button>
-									<button type="button" className="hover:text-green-500 p-1 mx-1">
-										<CiChat2 size={24} />
-									</button>
-									{session ? (
-										<button
-											type="button"
-											className="hover:text-green-500 p-1 mx-1"
-											onClick={() => supabase.auth.signOut()}
-										>
-											<CiLogout size={24} />
-										</button>
-									) : (
-										<button
-											type="button"
-											className="hover:text-green-500 p-1 mx-1"
-											onClick={() => router.push(`/auth/login?redirect=${router.asPath}`)}
-										>
-											<CiLogin size={24} />
-										</button>
-									)}
-									<button
-										type="button"
-										className="hover:text-green-500 p-1 mx-1"
-										onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-									>
-										{theme === 'dark' ? <MdDarkMode size={24} /> : <MdLightMode size={24} />}
-									</button>
+
+								{/* option bar */}
+								<div className="hidden items-center justify-end md:flex md:flex-1 md:w-0">
+									<OptionsBar />
 								</div>
 							</div>
 						</div>
@@ -384,7 +364,7 @@ const Headers = (props: Props) => {
 						>
 							<Popover.Panel
 								focus
-								className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition lg:hidden z-50"
+								className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden z-50"
 							>
 								<div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
 									<div className="px-5 pt-5 pb-6">
