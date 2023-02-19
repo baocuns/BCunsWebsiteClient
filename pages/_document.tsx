@@ -6,7 +6,7 @@ export default function Document() {
 			<Head>
 				<link rel="icon" href="/images/BC.png" />
 			</Head>
-			<body className="dark:bg-gray-900">
+			<body className="dark:bg-gray-900 scrollbar-hide">
 				<Main />
 				<NextScript />
 			</body>
