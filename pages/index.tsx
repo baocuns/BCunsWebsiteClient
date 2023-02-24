@@ -21,7 +21,7 @@ export default function Home(props: IHomeProps) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta
 					name="description"
-					content="Web đọc truyện tranh online full, đa dạng thể loại: truyện tranh ngôn tình, đam mỹ, xuyên không, cổ trang, trọng sinh, manhwa, manhua mới nhất 2022 tại BCuns"
+					content="BCuns trang web đọc truyện tranh online, đa dạng thể loại như truyện tranh ngôn tình, đam mỹ, xuyên không, cổ trang, trọng sinh, manga, manhua mới nhất, chất lượng và được cập nhật liên tục"
 					property=""
 				/>
 			</Head>

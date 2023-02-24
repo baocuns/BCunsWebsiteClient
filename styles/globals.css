@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.is_scroll {
-    transform: translateY(-100%);
-}
-
-.animation_scroll {
-    transition-duration: 0.3s;
-    transition-delay: 0s;
-    transition-timing-function: ease;
+@layer utilities {
+    .is_scroll {
+        transform: translateY(-100%);
+    }
+    .animation_scroll {
+        transition-duration: 0.3s;
+        transition-delay: 0s;
+        transition-timing-function: ease;
+    }
 }
