@@ -1,73 +1,83 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import * as React from 'react'
+import { CiLocationOn, CiPhone } from 'react-icons/ci'
 
 export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
 	return (
-		<footer className="p-4 bg-white sm:p-6 dark:bg-gray-900 border-t">
+		<footer className="p-4 bg-white sm:p-6 border-t dark:bg-gray-900 dark:border-gray-700">
 			<div className="md:flex md:justify-between">
-				<div className="mb-6 md:mb-0">
-					<a href="https://flowbite.com/" className="flex items-center">
-            
-            <Image
-								src="/images/BC.png"
-								alt="BCuns Logo"
-                width={56}
-                height={56}
-								priority
-                className='rounded'
-							/>
-					</a>
+				<div className="mb-6 md:mb-0 md:w-1/3">
+					<Link href="/" className="flex items-center">
+						<Image
+							src="/images/BC.png"
+							alt="BCuns"
+							width={56}
+							height={56}
+							priority
+							className="rounded"
+						/>
+						<span className="self-center text-2xl ml-2 font-semibold whitespace-nowrap dark:text-white">
+							BCuns
+						</span>
+					</Link>
+					<div className='mt-2 text-justify text-sm'>
+						<span>
+							BCuns trang web đọc truyện tranh online, đa dạng thể loại như truyện tranh ngôn tình, đam
+							mỹ, xuyên không, cổ trang, trọng sinh, manga, manhua mới nhất, chất lượng và được cập nhật liên tục
+						</span>
+					</div>
 				</div>
 				<div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
 					<div>
 						<h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-							Resources
+							Dịch Vụ
 						</h2>
 						<ul className="text-gray-600 dark:text-gray-400">
 							<li className="mb-4">
-								<a href="https://flowbite.com/" className="hover:underline">
-									Flowbite
-								</a>
+								<Link href="/comics" className="hover:underline">
+									Truyện Tranh
+								</Link>
 							</li>
 							<li>
-								<a href="https://tailwindcss.com/" className="hover:underline">
-									Tailwind CSS
-								</a>
+								<Link href="/anime" className="hover:underline">
+									Anime
+								</Link>
 							</li>
 						</ul>
 					</div>
 					<div>
 						<h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-							Follow us
+							Khám Phá
 						</h2>
 						<ul className="text-gray-600 dark:text-gray-400">
 							<li className="mb-4">
-								<a href="https://github.com/themesberg/flowbite" className="hover:underline ">
-									Github
-								</a>
+								<Link href="/news" className="hover:underline ">
+									Tin Tức
+								</Link>
 							</li>
 							<li>
-								<a href="https://discord.gg/4eeurUVvTy" className="hover:underline">
-									Discord
-								</a>
+								<Link href="/blog" className="hover:underline">
+									Cộng Đồng
+								</Link>
 							</li>
 						</ul>
 					</div>
-					<div>
+					<div className="col-span-2 md:col-span-1">
 						<h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-							Legal
+							Thông tin liên hệ
 						</h2>
 						<ul className="text-gray-600 dark:text-gray-400">
-							<li className="mb-4">
-								<a href="#" className="hover:underline">
-									Privacy Policy
-								</a>
+							<li className="mb-4 flex items-center">
+								<CiLocationOn size={20} color={'red'} />
+								<p className="ml-2">Q.1, TP. Hồ Chí Minh</p>
 							</li>
-							<li>
-								<a href="#" className="hover:underline">
-									Terms &amp; Conditions
+							<li className="flex items-center">
+								<CiPhone size={20} color="red" />
+								<a href="tel:0326447480" className="hover:underline ml-2">
+									0326447480
 								</a>
 							</li>
 						</ul>
@@ -77,14 +87,19 @@ export default function Footer(props: IFooterProps) {
 			<hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 			<div className="sm:flex sm:items-center sm:justify-between">
 				<span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-					© 2022{' '}
-					<a href="https://flowbite.com/" className="hover:underline">
+					© 2023{' '}
+					<Link href="/" className="hover:underline">
 						BCuns™
-					</a>
+					</Link>
 					. All Rights Reserved.
 				</span>
 				<div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
-					<a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+					<a
+						href="https://www.facebook.com/bcuns"
+						target={'_blank'}
+						className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						rel="noreferrer"
+					>
 						<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 							<path
 								fill-rule="evenodd"
