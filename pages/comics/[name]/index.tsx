@@ -34,6 +34,7 @@ const Comic = (props: Props) => {
 	return (
 		<>
 			<Head>
+				<title>{`${data.title} | BCuns - Truyện Tranh Online`}</title>
 				<SEO
 					title={`${data.title} | BCuns - Truyện Tranh Online`}
 					url={url}
