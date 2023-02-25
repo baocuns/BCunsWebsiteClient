@@ -18,7 +18,6 @@ const SEO = (props: Props) => {
 
 	return (
 		<>
-			<title>{title}</title>
 			{/* 6. Meta Description */}
 			<meta name="description" content={description} />
 			{/* 4. Open Graph */}
