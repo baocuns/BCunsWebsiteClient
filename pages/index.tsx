@@ -23,9 +23,10 @@ export default function Home(props: Props) {
 	return (
 		<>
 			<Head>
+				<title>Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns</title>
 				<SEO
 					title="Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns"
-					url={props.url}
+					url='{props.url}'
 					image="/images/BC.png"
 					description="Đọc truyện tranh online miễn phí tại trang web của BCuns. Chúng tôi cung cấp cho bạn hàng ngàn tác phẩm truyện tranh từ các tác giả nổi tiếng nhất và nhiều thế loại như manga, manhua, manhwa. Tìm kiếm truyện tranh yêu thích của bạn dễ dàng với công cụ tìm kiếm tiên tiến của BCuns và đọc truyện mọi lúc mọi nơi trên thiết bị di động của bạn. Đăng ký tài khoản để lưu trữ truyện yêu thích của bạn và tham gia vào cộng đồng truyện tranh của BCuns. Hãy đến với BCuns ngay hôm nay để khám phá thế giới truyện tranh đầy màu sắc và giải trí!"
 					keywords="đọc truyện tranh, truyện tranh online, trang web truyện tranh, tác phẩm truyện tranh, đọc truyện miễn phí, cộng đồng truyện tranh, manga, manhua, manhwa"

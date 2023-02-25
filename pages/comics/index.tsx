@@ -91,6 +91,7 @@ const Comics = (props: Props) => {
 	return (
 		<>
 			<Head>
+				<title>Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns</title>
 				<SEO
 					title="Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns"
 					url={props.url}
