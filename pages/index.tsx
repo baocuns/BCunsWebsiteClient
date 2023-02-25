@@ -1,28 +1,34 @@
 import axios from 'axios'
+import { GetServerSidePropsContext } from 'next'
 import { useTheme } from 'next-themes'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import * as React from 'react'
+import { SEO } from '../src/components'
 
-export interface IHomeProps {}
+type Props = {
+	url: any
+}
 
-export default function Home(props: IHomeProps) {
-	// const handleFetchData = async () => {
-	// 	axios.get('https://nhattruyenmin.com/truyen-tranh/re-cervin/chap-1/930414')
-	// 	.then(res => {
-	// 		console.log(res)
-	// 	})
-	// }
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const url = context.req.url
+
+	return { props: { url } }
+}
+
+export default function Home(props: Props) {
+	const router = useRouter()
 
 	return (
 		<>
 			<Head>
-				<title>BCuns</title>
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<meta
-					name="description"
-					content="BCuns trang web đọc truyện tranh online, đa dạng thể loại như truyện tranh ngôn tình, đam mỹ, xuyên không, cổ trang, trọng sinh, manga, manhua mới nhất, chất lượng và được cập nhật liên tục"
-					property=""
+				<SEO
+					title="Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns"
+					url={props.url}
+					image="/images/BC.png"
+					description="Đọc truyện tranh online miễn phí tại trang web của BCuns. Chúng tôi cung cấp cho bạn hàng ngàn tác phẩm truyện tranh từ các tác giả nổi tiếng nhất và nhiều thế loại như manga, manhua, manhwa. Tìm kiếm truyện tranh yêu thích của bạn dễ dàng với công cụ tìm kiếm tiên tiến của BCuns và đọc truyện mọi lúc mọi nơi trên thiết bị di động của bạn. Đăng ký tài khoản để lưu trữ truyện yêu thích của bạn và tham gia vào cộng đồng truyện tranh của BCuns. Hãy đến với BCuns ngay hôm nay để khám phá thế giới truyện tranh đầy màu sắc và giải trí!"
+					keywords="đọc truyện tranh, truyện tranh online, trang web truyện tranh, tác phẩm truyện tranh, đọc truyện miễn phí, cộng đồng truyện tranh, manga, manhua, manhwa"
 				/>
 			</Head>
 			<main>

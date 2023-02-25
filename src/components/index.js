@@ -9,6 +9,7 @@ import ProfileDetails from './Account/ProfileDetails'
 import Loading from './Loading'
 import TitleLink from './GridCardList/TitleLink'
 import Search from './Search'
+import SEO from './SEO'
 
 export {
     ChapterList,
@@ -22,4 +23,5 @@ export {
     Loading,
     TitleLink,
     Search,
+    SEO
 }
