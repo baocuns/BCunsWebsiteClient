@@ -1,10 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { GridCardList, TitleLink } from '../../src/components'
+import { GridCardList, SEO, TitleLink } from '../../src/components'
 
-type Props = {}
+type Props = {
+	url: any
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const url = context.req.url
+
+	return { props: { url } }
+}
 
 const Comics = (props: Props) => {
 	const supabase = useSupabaseClient<Database>()
@@ -80,57 +89,15 @@ const Comics = (props: Props) => {
 	}, [])
 
 	return (
-		<div>
+		<>
 			<Head>
-				<title>Truyện Tranh &amp; Đọc Truyện Tranh Online Comic Tại BCuns | BCuns</title>
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<meta
-					name="description"
-					content="Web đọc truyện tranh online full, đa dạng thể loại: truyện tranh ngôn tình, đam mỹ, xuyên không, cổ trang, trọng sinh, manhwa, manhua mới nhất tại BCuns"
-					property=""
+				<SEO
+					title="Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns"
+					url={props.url}
+					image="/images/BC.png"
+					description="Đọc truyện tranh online miễn phí tại trang web của BCuns. Chúng tôi cung cấp cho bạn hàng ngàn tác phẩm truyện tranh từ các tác giả nổi tiếng nhất và nhiều thế loại như manga, manhua, manhwa. Tìm kiếm truyện tranh yêu thích của bạn dễ dàng với công cụ tìm kiếm tiên tiến của BCuns và đọc truyện mọi lúc mọi nơi trên thiết bị di động của bạn. Đăng ký tài khoản để lưu trữ truyện yêu thích của bạn và tham gia vào cộng đồng truyện tranh của BCuns. Hãy đến với BCuns ngay hôm nay để khám phá thế giới truyện tranh đầy màu sắc và giải trí!"
+					keywords="đọc truyện tranh, truyện tranh online, trang web truyện tranh, tác phẩm truyện tranh, đọc truyện miễn phí, cộng đồng truyện tranh, manga, manhua, manhwa"
 				/>
-				<meta
-					name="twitter:title"
-					content="Truyện Tranh &amp; Đọc Truyện Tranh Online Comic Tại BCuns | BCuns"
-					property=""
-				/>
-				<meta
-					name="twitter:description"
-					content="Web đọc truyện tranh online full, đa dạng thể loại: truyện tranh ngôn tình, đam mỹ, xuyên không, cổ trang, trọng sinh, manhwa, manhua mới nhất tại BCuns"
-					property=""
-				/>
-				<meta
-					name="twitter:image"
-					content="https://manhua.acimg.cn/horizontal/0/24_01_18_0a3ff00895a448ee7147f6a221782fc6_1669223905901.png/0"
-					property=""
-				/>
-				<meta
-					name=""
-					content="Truyện Tranh &amp; Đọc Truyện Tranh Online Comic Tại BCuns | BCuns"
-					property="og:title"
-				/>
-				<meta
-					name=""
-					content="Web đọc truyện tranh online full, đa dạng thể loại: truyện tranh ngôn tình, đam mỹ, xuyên không, cổ trang, trọng sinh, manhwa, manhua mới nhất tại BCuns"
-					property="og:description"
-				/>
-				<meta
-					name=""
-					content="https://manhua.acimg.cn/horizontal/0/24_01_18_0a3ff00895a448ee7147f6a221782fc6_1669223905901.png/0"
-					property="og:image"
-				/>
-				<meta name="copyright" content="BCuns" property="" />
-				<meta
-					name="keywords"
-					content="truyện tranh, đọc truyện tranh, đọc truyện tranh ngôn tình hay, truyện đam mỹ, truyện xuyên không, truyện tranh online full, truyện tranh online, truyện ngôn tình, truyện cổ trang, truyện trọng sinh, boylove , manga, manhua, manhwa, truyện tranh hàn"
-					property=""
-				/>
-				<meta name="" content="https://baocuns.com/comics" property="og:url" />
-				<meta name="site" content="POPS APP Vietnam" property="" />
-				<meta name="language" content="vi" property="" />
-				<meta name="country" content="vn" property="" />
-				<meta name="distribution" content="local" property="" />
-				<meta name="next-head-count" content="22" />
 			</Head>
 			<main className="px-4 py-4 sm:px-8">
 				<div>
@@ -159,7 +126,7 @@ const Comics = (props: Props) => {
 					{/* <Pagination /> */}
 				</div>
 			</main>
-		</div>
+		</>
 	)
 }
 
