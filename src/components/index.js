@@ -10,6 +10,7 @@ import Loading from './Loading'
 import TitleLink from './GridCardList/TitleLink'
 import Search from './Search'
 import SEO from './SEO'
+import TypingEffect from './TypingEffect'
 
 export {
     ChapterList,
@@ -23,5 +24,6 @@ export {
     Loading,
     TitleLink,
     Search,
-    SEO
+    SEO,
+    TypingEffect,
 }

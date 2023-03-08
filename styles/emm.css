@@ -1,0 +1,239 @@
+.emm {
+    overflow: hidden;
+    margin: 0;
+    height: 100vh;
+    perspective: 20em;
+    font-size: 5vmin;
+}
+
+.assembly {
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+    animation: r 16s linear infinite;
+}
+
+@keyframes r {
+    to {
+        transform: rotateY(1turn);
+    }
+}
+
+.cube {
+    transform-style: preserve-3d;
+}
+
+.cube:nth-child(1) {
+    transform: translate3d(1.625em, 5.125em, 0.125em) scale3d(1.6, 1.6, 1.6);
+}
+
+.cube:nth-child(1) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/8669976843669151056/09fcb0f4f1902cce7581.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(2) {
+    transform: translate3d(0.875em, 6.625em, 7.125em) scale3d(2.1, 2.1, 2.1);
+}
+
+.cube:nth-child(2) .cube__face {
+    background-image: url('https://b-f9-zpcloud.zdn.vn/8842408620041048697/57a9a9c9ebad36f36fbc.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(3) {
+    transform: translate3d(-7.625em, 7.875em, 3.625em) scale3d(2.1, 2.1, 2.1);
+}
+
+.cube:nth-child(3) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/7604447672447047160/4687003f425b9f05c64a.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(4) {
+    transform: translate3d(5.875em, -6.375em, -0.125em) scale3d(0.9, 0.9, 0.9);
+}
+
+.cube:nth-child(4) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/4675976490536667622/7ca1a804e960343e6d71.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(5) {
+    transform: translate3d(4.625em, -1.375em, -3.375em) scale3d(0.6, 0.6, 0.6);
+}
+
+.cube:nth-child(5) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/8010268250666821760/fbfa56621406c9589017.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(6) {
+    transform: translate3d(-0.125em, -2.375em, -5.875em) scale3d(0.8, 0.8, 0.8);
+}
+
+.cube:nth-child(6) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/8140027319885474682/9b3632ae70caad94f4db.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(7) {
+    transform: translate3d(-1.875em, 1.625em, -7.625em) scale3d(0.7, 0.7, 0.7);
+}
+
+.cube:nth-child(7) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/2108617591657329951/b8ad59ef1b8bc6d59f9a.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(8) {
+    transform: translate3d(6.875em, -6.125em, -5.125em) scale3d(2.1, 2.1, 2.1);
+}
+
+.cube:nth-child(8) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/1104267242803935466/80d16c932ef7f3a9aae6.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(9) {
+    transform: translate3d(-1.875em, -0.875em, 2.875em) scale3d(2, 2, 2);
+}
+
+.cube:nth-child(9) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/4391024745519315911/b6b254f01694cbca9285.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(10) {
+    transform: translate3d(-6.875em, -2.875em, -4.375em) scale3d(1.8, 1.8, 1.8);
+}
+
+.cube:nth-child(10) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/8000190750987102162/4b322da76fc3b29debd2.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(11) {
+    transform: translate3d(-6.375em, 2.375em, 6.875em) scale3d(1.3, 1.3, 1.3);
+}
+
+.cube:nth-child(11) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/5735904621224422455/137cbf23fd4720197956.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(12) {
+    transform: translate3d(5.625em, 1em, 5.625em) scale3d(1.6, 1.6, 1.6);
+}
+
+.cube:nth-child(12) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/856060565833446434/ff6849370b53d60d8f42.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(13) {
+    transform: translate3d(-6.125em, -2.875em, 6.875em) scale3d(1, 1, 1);
+}
+
+.cube:nth-child(13) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/8191550417166174421/9b4b61352351fe0fa740.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(14) {
+    transform: translate3d(6.625em, 2.125em, -3.125em) scale3d(1, 1, 1);
+}
+
+.cube:nth-child(14) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/6654349151059823493/d47b12cc50a88df6d4b9.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(15) {
+    transform: translate3d(4.875em, -5.125em, 6.375em) scale3d(2.1, 2.1, 2.1);
+}
+
+.cube:nth-child(15) .cube__face {
+    background-image: url('https://b-f8-zpcloud.zdn.vn/1715477114485899190/62509da0dfc4029a5bd5.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(16) {
+    transform: translate3d(-1.625em, -5.875em, -5.375em) scale3d(0.7, 0.7, 0.7);
+}
+
+.cube:nth-child(16) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/3870815793026335055/59da4d560f32d26c8b23.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(17) {
+    transform: translate3d(5.375em, 2.625em, -7.875em) scale3d(2.2, 2.2, 2.2);
+}
+
+.cube:nth-child(17) .cube__face {
+    background-image: url('https://b-f9-zpcloud.zdn.vn/2863539072865654654/960578eb3a8fe7d1be9e.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(18) {
+    transform: translate3d(-5.875em, 2.875em, -7.375em) scale3d(2, 2, 2);
+}
+
+.cube:nth-child(18) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/241115714543638899/063577ce35aae8f4b1bb.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(19) {
+    transform: translate3d(0.375em, 7.625em, -7.125em) scale3d(1.8, 1.8, 1.8);
+}
+
+.cube:nth-child(19) .cube__face {
+    background-image: url('https://f9-zpcloud.zdn.vn/5721686975399773668/c203725c3038ed66b429.jpg');
+    background-size: cover;
+}
+
+.cube:nth-child(20) {
+    transform: translate3d(-1.125em, 0.875em, -2em) scale3d(1, 1, 1);
+}
+
+.cube:nth-child(20) .cube__face {
+    background-image: url('https://f8-zpcloud.zdn.vn/4549792006657632757/9302330d8a6957370e78.jpg');
+    background-size: cover;
+}
+
+.cube__face {
+    margin: -1.25em;
+    width: 2.5em;
+    height: 2.5em;
+    backface-visibility: hidden;
+    box-shadow: inset 0 0 1px;
+    background: radial-gradient(#ffd280, orange);
+}
+
+.cube__face:nth-child(1) {
+    transform: rotateY(0deg) translateZ(1.25em);
+}
+
+.cube__face:nth-child(2) {
+    transform: rotateY(90deg) translateZ(1.25em);
+}
+
+.cube__face:nth-child(3) {
+    transform: rotateY(180deg) translateZ(1.25em);
+}
+
+.cube__face:nth-child(4) {
+    transform: rotateY(270deg) translateZ(1.25em);
+}
+
+.cube__face:nth-child(5) {
+    transform: rotateX(90deg) translateZ(1.25em);
+}
+
+.cube__face:nth-child(6) {
+    transform: rotateX(-90deg) translateZ(1.25em);
+}
+
+/* show text */
