@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { SEO, TypingEffect } from '../../src/components'
 import Head from 'next/head'
@@ -36,6 +36,7 @@ const Emm = (props: Props) => {
 	const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 	const [data, setData] = useState<Props>()
 	const [open, setOpen] = useState(false)
+	const [isPlaySong, setIsPlaySong] = useState(false)
 
 	const handleClickPicture = (e: any, i: number) => {
 		setOpen(!open)
@@ -43,6 +44,16 @@ const Emm = (props: Props) => {
 			img: window.getComputedStyle(e).backgroundImage.slice(5, -2),
 			content: contents[i],
 		})
+		handlePlaySong()
+	}
+
+	const handlePlaySong = () => {
+		const audio = new Audio('/audio/song.mp3')
+		if(!isPlaySong) {
+			audio.play()
+			audio.loop = true
+		}
+		setIsPlaySong(true)
 	}
 
 	return (
