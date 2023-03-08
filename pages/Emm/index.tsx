@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { TypingEffect } from '../../src/components'
+import { SEO, TypingEffect } from '../../src/components'
+import Head from 'next/head'
 
 type Props = {
 	img: string
@@ -46,74 +47,90 @@ const Emm = (props: Props) => {
 
 	return (
 		<>
-			<div className="emm">
-				<div className="assembly absolute">
-					{arr.map((e, i) => (
-						<div key={i} className="cube absolute" onClick={(e) => handleClickPicture(e.target, i)}>
-							<div className="cube__face absolute"></div>
-							<div className="cube__face absolute"></div>
-							<div className="cube__face absolute"></div>
-							<div className="cube__face absolute"></div>
-							<div className="cube__face absolute"></div>
-							<div className="cube__face absolute"></div>
-						</div>
-					))}
-				</div>
-			</div>
-
-			{/* modals */}
-			<Transition.Root show={open} as={Fragment}>
-				<Dialog as="div" className="relative z-10" onClose={setOpen}>
-					<Transition.Child
-						as={Fragment}
-						enter="ease-out duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="ease-in duration-200"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
-						<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-					</Transition.Child>
-
-					<div className="fixed inset-0 z-10 overflow-y-auto">
-						<div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
-							<Transition.Child
-								as={Fragment}
-								enter="ease-out duration-300"
-								enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-								enterTo="opacity-100 translate-y-0 sm:scale-100"
-								leave="ease-in duration-200"
-								leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-								leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+			<Head>
+				<title>Chúc mừng ngày Phụ nữ Việt Nam 8/3 - Người phụ nữ tuyệt vời của tôi! | BCuns</title>
+				<SEO
+					title="Chúc mừng ngày Phụ nữ Việt Nam 8/3 - Người phụ nữ tuyệt vời của tôi! | BCuns"
+					url="{props.url}"
+					image="/images/BC.png"
+					description="Trong ngày Phụ nữ Việt Nam 8/3 này, tôi muốn gửi đến bạn những lời chúc tốt đẹp nhất. Bạn là một người phụ nữ đáng yêu, thông minh, và có tấm lòng rộng lớn. Cám ơn bạn vì luôn là người đồng hành của tôi trong mọi khoảnh khắc."
+					keywords="Trong ngày Phụ nữ Việt Nam 8/3 này, tôi muốn gửi đến bạn những lời chúc tốt đẹp nhất. Bạn là một người phụ nữ đáng yêu, thông minh, và có tấm lòng rộng lớn. Cám ơn bạn vì luôn là người đồng hành của tôi trong mọi khoảnh khắc."
+				/>
+			</Head>
+			<main>
+				<div className="emm">
+					<div className="assembly absolute">
+						{arr.map((e, i) => (
+							<div
+								key={i}
+								className="cube absolute"
+								onClick={(e) => handleClickPicture(e.target, i)}
 							>
-								<Dialog.Panel className="relative transform overflow-hidden rounded bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-									<div className="bg-white px-2 pt-3 pb-2 sm:p-4 sm:pb-4">
-										<div className="sm:flex sm:items-start">
-											<div className="text-center sm:mt-0 sm:ml-4 sm:text-left">
-												<Dialog.Title
-													as="h3"
-													className="text-base font-semibold leading-6 text-gray-900 pb-2"
-												>
-													Gửi Emm iu :33
-												</Dialog.Title>
-												<div>
-													<img src={data?.img} alt="" className="rounded shadow" />
+								<div className="cube__face absolute"></div>
+								<div className="cube__face absolute"></div>
+								<div className="cube__face absolute"></div>
+								<div className="cube__face absolute"></div>
+								<div className="cube__face absolute"></div>
+								<div className="cube__face absolute"></div>
+							</div>
+						))}
+					</div>
+				</div>
+
+				{/* modals */}
+				<Transition.Root show={open} as={Fragment}>
+					<Dialog as="div" className="relative z-30" onClose={setOpen}>
+						<Transition.Child
+							as={Fragment}
+							enter="ease-out duration-300"
+							enterFrom="opacity-0"
+							enterTo="opacity-100"
+							leave="ease-in duration-200"
+							leaveFrom="opacity-100"
+							leaveTo="opacity-0"
+						>
+							<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+						</Transition.Child>
+
+						<div className="fixed inset-0 z-10 overflow-y-auto">
+							<div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
+								<Transition.Child
+									as={Fragment}
+									enter="ease-out duration-300"
+									enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+									enterTo="opacity-100 translate-y-0 sm:scale-100"
+									leave="ease-in duration-200"
+									leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+									leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+								>
+									<Dialog.Panel className="relative transform overflow-hidden rounded bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+										<div className="bg-white px-2 pt-3 pb-2 sm:p-4 sm:pb-4">
+											<div className="sm:flex sm:items-start">
+												<div className="text-center sm:mt-0 sm:ml-4 sm:text-left">
+													<Dialog.Title
+														as="h3"
+														className="text-base font-semibold leading-6 text-gray-900 pb-2"
+													>
+														Gửi Emm iu :33
+													</Dialog.Title>
+													<div>
+														<img src={data?.img} alt="" className="rounded shadow" />
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-										<p className="font-light italic">
-											<TypingEffect text={data?.content} delay={30} />
-										</p>
-									</div>
-								</Dialog.Panel>
-							</Transition.Child>
+										<div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+											<p className="font-light italic">
+												<TypingEffect text={data?.content} delay={30} />
+											</p>
+										</div>
+									</Dialog.Panel>
+								</Transition.Child>
+							</div>
 						</div>
-					</div>
-				</Dialog>
-			</Transition.Root>
+					</Dialog>
+				</Transition.Root>
+			</main>
 		</>
 	)
 }
