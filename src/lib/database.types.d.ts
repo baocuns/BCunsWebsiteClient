@@ -186,11 +186,11 @@ interface Database {
 					is_public: number
 				}
 				Insert: {
-					id: string
-					bcuns_id?: string | null
-					full_name?: string | null
-					story?: string | null
-					avatar_url?: string | null
+					uid?: string
+					bcuns_id?: string | string[] | undefined
+					full_name?: string | undefined
+					story?: string | undefined
+					avatar_url?: string | undefined
 					is_block?: boolean
 					is_public?: number
 				}
