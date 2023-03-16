@@ -1,7 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { Provider } from '@supabase/supabase-js'
 import Head from 'next/head'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import { CiLock, CiPalette } from 'react-icons/ci'
 import { FcGoogle } from 'react-icons/fc'
 import { SiFacebook } from 'react-icons/si'
@@ -9,7 +12,85 @@ import { SEO } from '../../../src/components'
 
 type Props = {}
 
+type Account = {
+	email?: string
+}
+
 const Forgot = (props: Props) => {
+	const supabase = useSupabaseClient()
+	const session = useSession()
+	const router = useRouter()
+
+	const [isSendEmailResetPassword, setIsSendEmailResetPassword] = useState(false)
+	const [isError, setIsError] = useState(false)
+	const [data, setData] = useState<Account>()
+
+	const handleChangeData = (target: HTMLInputElement) => {
+		const { value, name } = target
+		setData((prev) => ({
+			...prev,
+			[name]: value,
+		}))
+	}
+
+	/**
+	 * Step 1: Send the user an email to get a password reset token.
+	 * This email contains a link which sends the user back to your application.
+	 */
+	const handleForgotPassword = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		supabase.auth
+			.resetPasswordForEmail(data?.email || '', {
+				redirectTo: 'https://www.baocuns.com/auth/forgot?reset=true',
+			})
+			.then(({ data, error }) => {
+				if (error) {
+					setIsError(true)
+				}
+				if (data) {
+					setIsSendEmailResetPassword(true)
+				}
+			})
+	}
+
+	/**
+	 * Step 2: Once the user is redirected back to your application,
+	 * ask the user to reset their password.
+	 */
+	useEffect(() => {
+		if (router.query.reset === 'true' && session?.user) {
+			const newPassword: string | any = prompt('What would you like your new password to be?')
+			supabase.auth.updateUser({ password: newPassword }).then(({ data, error }) => {
+				if (data) {
+					alert('Password updated successfully!')
+					router.push('/')
+				}
+				if (error) alert('There was an error updating your password.')
+			})
+		}
+		// supabase.auth.onAuthStateChange(async (event, session) => {
+		// 	// console.log('event: ', event);
+			
+		// 	if (event === 'PASSWORD_RECOVERY') {
+		// 		const newPassword : string | any = prompt('What would you like your new password to be?')
+		// 		const { data, error } = await supabase.auth.updateUser({ password: newPassword })
+
+		// 		if (data) {
+		// 			alert('Password updated successfully!')
+		// 			router.push('/')
+		// 		}
+		// 		if (error) alert('There was an error updating your password.')
+		// 	}
+		// })
+	}, [router, session?.user, supabase.auth])
+
+	// login with goofle
+	const handleLoginWithOAuth = (type: Provider) => {
+		supabase.auth.signInWithOAuth({
+			provider: type,
+		})
+	}
+
 	return (
 		<>
 			<Head>
@@ -33,43 +114,77 @@ const Forgot = (props: Props) => {
 						</div>
 						<div className="my-3 font-light">Sign in today for BCuns</div>
 						<div className="grid grid-cols-2 gap-2 border-b pb-4 my-2 dark:border-b-gray-700">
-							<button className="flex justify-center py-2 shadow rounded hover:bg-gray-100 dark:shadow-gray-700 dark:hover:bg-gray-700">
+							<button
+								className="flex justify-center py-2 shadow rounded hover:bg-gray-100 dark:shadow-gray-700 dark:hover:bg-gray-700"
+								onClick={() => handleLoginWithOAuth('google')}
+							>
 								<FcGoogle size={25} />
 							</button>
-							<button className="flex justify-center py-2 shadow rounded hover:bg-gray-100 dark:shadow-gray-700 dark:hover:bg-gray-700">
+							<button
+								className="flex justify-center py-2 shadow rounded hover:bg-gray-100 dark:shadow-gray-700 dark:hover:bg-gray-700"
+								onClick={() => handleLoginWithOAuth('facebook')}
+							>
 								<SiFacebook size={25} color="#039be5" />
 							</button>
 						</div>
 						{/* form */}
-						<div className="py-2">
-							<div>
-								<label htmlFor="email" className="">
-									Your email address
-								</label>
-								<div className="my-2">
-									<input
-										type="email"
-										name="email"
-										id="email"
-										className="w-full px-4 py-2 shadow rounded focus:outline-green-600"
-										placeholder="Your email address"
-									/>
+						<form onSubmit={(e) => handleForgotPassword(e)} id="forgot">
+							<div className="py-2">
+								<div>
+									<label htmlFor="email" className="">
+										Your email address
+									</label>
+									<div className="my-2">
+										<input
+											type="email"
+											name="email"
+											id="email"
+											required
+											className="w-full px-4 py-2 shadow rounded focus:outline-green-600"
+											placeholder="Your email address"
+											onChange={(e) => handleChangeData(e.target)}
+										/>
+									</div>
 								</div>
 							</div>
+						</form>
+						{/* error */}
+						<div className={`py-2 justify-center ${isError ? 'flex' : 'hidden'}`}>
+							<p className="text-red-600 underline text-sm">Invalid email credentials</p>
+						</div>
+						{/* error */}
+						<div className={`py-2 justify-center ${isSendEmailResetPassword ? 'flex' : 'hidden'}`}>
+							<p className="text-green-600 underline text-sm">
+								Check your email for the password reset link
+							</p>
 						</div>
 						{/* submit */}
 						<div className="py-2">
-							<button className="flex w-full py-2 rounded shadow bg-green-500 hover:bg-green-600 text-white justify-center items-center gap-4">
-                                <CiLock size={20} />
+							<button
+								type="submit"
+								form="forgot"
+								className="flex w-full py-2 rounded shadow bg-green-500 hover:bg-green-600 text-white justify-center items-center gap-4"
+							>
+								<CiLock size={20} />
 								Send reset password instructions
 							</button>
 						</div>
 						{/* link to login */}
-                        <div className='py-2 flex justify-center'>
-							<Link href={'/auth/login'} className='text-gray-500 hover:text-gray-400 underline text-sm'>Already have an account? Sign in</Link>
+						<div className="py-2 flex justify-center">
+							<Link
+								href={'/auth/login'}
+								className="text-gray-500 hover:text-gray-400 underline text-sm"
+							>
+								Already have an account? Sign in
+							</Link>
 						</div>
-                        <div className='py-2 flex justify-center'>
-							<Link href={'/auth/signup'} className='text-gray-500 hover:text-gray-400 underline text-sm'>Don't have an account? Sign up</Link>
+						<div className="py-2 flex justify-center">
+							<Link
+								href={'/auth/signup'}
+								className="text-gray-500 hover:text-gray-400 underline text-sm"
+							>
+								Don't have an account? Sign up
+							</Link>
 						</div>
 					</div>
 				</div>

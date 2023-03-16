@@ -1,7 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Head from 'next/head'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
 import { CiLock, CiPalette } from 'react-icons/ci'
 import { FcGoogle } from 'react-icons/fc'
 import { SiFacebook } from 'react-icons/si'
@@ -9,7 +11,44 @@ import { SEO } from '../../../src/components'
 
 type Props = {}
 
-const Log = (props: Props) => {
+type Account = {
+	email?: string
+	password?: string
+}
+
+const Login = (props: Props) => {
+	const supabase = useSupabaseClient()
+	const router = useRouter()
+
+	const [data, setData] = useState<Account>()
+
+	const handleChangeData = (target: HTMLInputElement) => {
+		const { value, name } = target
+		setData((prev) => ({
+			...prev,
+			[name]: value
+		}))
+	}
+
+	const handleLogin = () => {
+		supabase.auth.signInWithPassword({
+			email: data?.email || '',
+			password: data?.password || ''
+		})
+		.then(({data, error}) => {
+			if (data) {
+				if (router.query.redirect) {
+					router.push(`/${router.query.redirect}`)
+				} else {
+					router.push('/')
+				}
+			}
+			if (error) {
+				router.push('/auth/login')
+			}
+		})
+	}
+
 	return (
 		<>
 			<Head>
@@ -53,6 +92,7 @@ const Log = (props: Props) => {
 										id="email"
 										className="w-full px-4 py-2 shadow rounded focus:outline-green-600"
 										placeholder="Your email address"
+										onChange={(e) => handleChangeData(e.target)}
 									/>
 								</div>
 							</div>
@@ -73,7 +113,9 @@ const Log = (props: Props) => {
 						</div>
 						{/* submit */}
 						<div className="py-2">
-							<button className="flex w-full py-2 rounded shadow bg-green-500 hover:bg-green-600 text-white justify-center items-center gap-4">
+							<button className="flex w-full py-2 rounded shadow bg-green-500 hover:bg-green-600 text-white justify-center items-center gap-4"
+								onClick={handleLogin}
+							>
                                 <CiLock size={20} />
 								Login
 							</button>
@@ -92,4 +134,4 @@ const Log = (props: Props) => {
 	)
 }
 
-export default Log
+export default Login

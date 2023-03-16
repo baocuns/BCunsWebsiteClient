@@ -1,11 +1,11 @@
-import axios from 'axios'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSidePropsContext } from 'next'
-import { useTheme } from 'next-themes'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import * as React from 'react'
+import { useEffect } from 'react'
 import { SEO } from '../src/components'
+import { createUser } from '../src/lib'
 
 type Props = {
 	url: any
@@ -18,7 +18,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Home(props: Props) {
+	const supabase = useSupabaseClient<Database>()
+	const session = useSession()
 	const router = useRouter()
+	
+
+	// create user profile
+	useEffect(() => {
+		createUser(session, supabase)
+	}, [session, supabase])
 
 	return (
 		<>
