@@ -18,7 +18,6 @@ type Props = {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-
 	// Create authenticated Supabase Client
 	const supabase = createServerSupabaseClient(context)
 	const bcuns_id: string | string[] | undefined = context.params?.bcuns_id
@@ -77,8 +76,9 @@ export default function Home(props: Props) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<main className="px-4 sm:px-8">
-				{profile ? (
+
+			{profile ? (
+				<main className="px-4 sm:px-8">
 					<>
 						<ProfileDetails profile={profile} />
 						{/* option */}
@@ -93,20 +93,31 @@ export default function Home(props: Props) {
 							</TabPanel>
 						</Box>
 					</>
-				) : (
-					<>
-						<div className="h-screen w-full flex items-center justify-center">
-							<h1 className="text-2xl font-medium pr-2 py-2 border-r-2">404</h1>
-							<p className="px-2">
-								This <b>bcuns id</b> could not be found.
-							</p>
-							<Link href={'/'}>
-								<u className="text-red-500 hover:text-red-600">Go Home</u>
+				</main>
+			) : (
+				<main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
+					<div className="text-center">
+						<p className="text-8xl font-semibold text-indigo-600">404</p>
+						<h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+							Page not found
+						</h1>
+						<p className="mt-6 text-base leading-7 text-gray-600">
+							Sorry, we couldn’t find <b className='text-red-500'>bcuns id</b> the page you’re looking for.
+						</p>
+						<div className="mt-10 flex items-center justify-center gap-x-6">
+							<Link
+								href="/"
+								className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
+								Go back home
+							</Link>
+							<Link href="/contact" className="text-sm font-semibold text-gray-900">
+								Contact support <span aria-hidden="true">&rarr;</span>
 							</Link>
 						</div>
-					</>
-				)}
-			</main>
+					</div>
+				</main>
+			)}
 		</>
 	)
 }

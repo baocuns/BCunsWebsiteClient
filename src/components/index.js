@@ -11,6 +11,7 @@ import TitleLink from './GridCardList/TitleLink'
 import Search from './Search'
 import SEO from './SEO'
 import TypingEffect from './TypingEffect'
+import Carousel from './Carousel'
 
 export {
     ChapterList,
@@ -26,4 +27,5 @@ export {
     Search,
     SEO,
     TypingEffect,
+    Carousel,
 }
