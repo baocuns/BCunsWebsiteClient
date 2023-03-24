@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { SEO } from '../src/components'
+import { Carousel, SEO } from '../src/components'
 import { createUser } from '../src/lib'
 
 type Props = {
@@ -17,11 +18,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	return { props: { url } }
 }
 
+const images = [
+	'https://images.pexels.com/photos/33545/sunrise-phu-quoc-island-ocean.jpg',
+	'https://images.pexels.com/photos/1435075/pexels-photo-1435075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+	'https://images.pexels.com/photos/1148998/pexels-photo-1148998.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+	'https://images.pexels.com/photos/1485894/pexels-photo-1485894.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+]
+
 export default function Home(props: Props) {
 	const supabase = useSupabaseClient<Database>()
 	const session = useSession()
 	const router = useRouter()
-	
 
 	// create user profile
 	useEffect(() => {
@@ -34,7 +41,7 @@ export default function Home(props: Props) {
 				<title>Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns</title>
 				<SEO
 					title="Đọc truyện tranh online miễn phí - Trang web truyện tranh số 1 | BCuns"
-					url='{props.url}'
+					url="{props.url}"
 					image="/images/BC.png"
 					description="Đọc truyện tranh online miễn phí tại trang web của BCuns. Chúng tôi cung cấp cho bạn hàng ngàn tác phẩm truyện tranh từ các tác giả nổi tiếng nhất và nhiều thế loại như manga, manhua, manhwa. Tìm kiếm truyện tranh yêu thích của bạn dễ dàng với công cụ tìm kiếm tiên tiến của BCuns và đọc truyện mọi lúc mọi nơi trên thiết bị di động của bạn. Đăng ký tài khoản để lưu trữ truyện yêu thích của bạn và tham gia vào cộng đồng truyện tranh của BCuns. Hãy đến với BCuns ngay hôm nay để khám phá thế giới truyện tranh đầy màu sắc và giải trí!"
 					keywords="đọc truyện tranh, truyện tranh online, trang web truyện tranh, tác phẩm truyện tranh, đọc truyện miễn phí, cộng đồng truyện tranh, manga, manhua, manhwa"
@@ -124,6 +131,9 @@ export default function Home(props: Props) {
 						</svg>
 					</div>
 				</div>
+
+				{/* slider */}
+				<Carousel images={images} />
 			</main>
 		</>
 	)

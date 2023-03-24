@@ -5,7 +5,7 @@ import { ParsedUrlQuery } from 'querystring'
 
 const createUser = (session: Session | any, supabase: SupabaseClient<Database, 'public', any>) => {
 	const user = session?.user
-	console.log('user: ', user);
+	// console.log('user: ', user);
 	
 	if (user) {
 		supabase
