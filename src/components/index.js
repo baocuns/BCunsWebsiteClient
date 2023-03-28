@@ -12,6 +12,8 @@ import Search from './Search'
 import SEO from './SEO'
 import TypingEffect from './TypingEffect'
 import Carousel from './Carousel'
+import News from './News'
+import Comics from './Comics'
 
 export {
     ChapterList,
@@ -28,4 +30,6 @@ export {
     SEO,
     TypingEffect,
     Carousel,
+    News,
+    Comics,
 }

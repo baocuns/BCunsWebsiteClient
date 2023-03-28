@@ -52,13 +52,13 @@ const Carousel = (props: Props) => {
 
 	return (
 		<>
-			<div className="relative h-screen w-screen">
+			<div className="relative h-56 md:h-screen w-screen">
 				{images.map((e, i) => (
 					<div
 						key={i}
 						className={classNames('slide', active === i ? 'w-full opacity-100' : 'w-0 opacity-0')}
 					>
-						<img src={e} alt="" className="object-cover h-screen w-screen" />
+						<img src={e} alt="" className="object-cover h-56 md:h-screen w-screen" />
 					</div>
 				))}
 
