@@ -5,7 +5,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { Carousel, Comics, News, SEO } from '../src/components'
+import { Carousel, Comics, Community, News, SEO } from '../src/components'
 import { createUser } from '../src/lib'
 
 type Props = {
@@ -19,11 +19,26 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const images = [
-	'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/thumb_1920x1080__notext_-74b733a15710-1677820176303-e0UF4omJ.jpg?v=0&maxW=1400&format=webp',
-	'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/copy_of_kvpex_thumb_1920x1080__notext_-f2a1eb0c96dd-1669023034755-WPjcwavK.jpg?v=0&maxW=1400&format=webp',
-	'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/copy_of_sepcho_thumb_1280x720__notext_-22886463a9cf-1663317472391-IOnOQU4X.jpeg?v=0&maxW=1400&format=webp',
-	'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/1920x1080_slider-fa8d5ffe9079-1678420976314-jrZwTXtE.jpg?v=0&maxW=1400&format=webp',
-	'https://popsimg.akamaized.net/api/v2/containers/file2/cms_assets/kl2023_thumb_1920x1080__notext_-d5822577b9ea-1678181211902-7CHfDw6A.jpg?v=0&maxW=1400&format=webp',
+	{
+		title: 'Đọa ký',
+		image: 'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/thumb_1920x1080__notext_-74b733a15710-1677820176303-e0UF4omJ.jpg?v=0&maxW=1400&format=webp'
+	},
+	{
+		title: 'Kiếp văn phòng',
+		image: 'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/copy_of_kvpex_thumb_1920x1080__notext_-f2a1eb0c96dd-1669023034755-WPjcwavK.jpg?v=0&maxW=1400&format=webp'
+	},
+	{
+		title: 'Sếp của tôi là chó',
+		image: 'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/copy_of_sepcho_thumb_1280x720__notext_-22886463a9cf-1663317472391-IOnOQU4X.jpeg?v=0&maxW=1400&format=webp'
+	},
+	{
+		title: 'Báo bối vô giá của hoàng đế bệ hạ',
+		image: 'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/1920x1080_slider-fa8d5ffe9079-1678420976314-jrZwTXtE.jpg?v=0&maxW=1400&format=webp'
+	},
+	{
+		title: 'Anh trai tôi là khủng long',
+		image: 'https://popsimg.akamaized.net/api/v2/containers/file2/cms_assets/kl2023_thumb_1920x1080__notext_-d5822577b9ea-1678181211902-7CHfDw6A.jpg?v=0&maxW=1400&format=webp'
+	},
 ]
 
 export default function Home(props: Props) {
@@ -57,6 +72,9 @@ export default function Home(props: Props) {
 
 				{/* comics */}
 				<Comics />
+				
+				{/* community */}
+				<Community />
 			</main>
 		</>
 	)
