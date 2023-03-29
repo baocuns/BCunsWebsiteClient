@@ -20,7 +20,7 @@ const News = (props: Props) => {
 				</div>
 				<div className="py-6">
 					<div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-						<div className="md:col-span-3 relative transition duration-500 ease-in-out hover:scale-105">
+						<div className="md:col-span-3 relative transition duration-500 ease-in-out hover:scale-105 z-10">
 							<div className="w-full h-full">
 								<img
 									src="https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/thumb_1920x1080__notext_-74b733a15710-1677820176303-e0UF4omJ.jpg?v=0&maxW=1400&format=webp"
