@@ -14,7 +14,9 @@ import TypingEffect from './TypingEffect'
 import Carousel from './Carousel'
 import News from './News'
 import Comics from './Comics'
-import Community from './Community'
+import Blog from './Blog'
+import Anime from './Anime'
+import Banner from './Banner'
 
 export {
     ChapterList,
@@ -33,5 +35,7 @@ export {
     Carousel,
     News,
     Comics,
-    Community,
+    Blog,
+    Anime,
+    Banner,
 }

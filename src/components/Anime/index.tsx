@@ -5,7 +5,7 @@ import { FiChevronRight } from 'react-icons/fi'
 
 type Props = {}
 
-const comics = [
+const animes = [
 	{
 		name: 'Đọa Ký',
 		image:
@@ -38,13 +38,13 @@ const comics = [
 	},
 ]
 
-const Comics = (props: Props) => {
+const Anime = (props: Props) => {
 	return (
 		<>
 			<div className="px-4 sm:px-8 md:px-12 lg:px-16 py-4 md:py-10">
 				<div className="flex justify-between pb-3 md:pb-6">
-					<h2 className="text-3xl lg:text-5xl font-bold dark:text-white">Comics</h2>
-					<Link href={'/comics'} className="hidden md:block">
+					<h2 className="text-3xl lg:text-5xl font-bold dark:text-white">Anime</h2>
+					<Link href={'/anime'} className="hidden md:block">
 						<div className="flex items-center gap-1 px-4 py-2 rounded shadow font-bold uppercase hover:bg-gray-100 transition duration-500 ease-in-out hover:scale-110 dark:shadow-gray-700 dark:hover:bg-gray-700 dark:text-white">
 							<p>see more</p>
 							<FiChevronRight size={20} />
@@ -53,7 +53,7 @@ const Comics = (props: Props) => {
 				</div>
 				<div className="py-6">
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-						{comics.map((e, i) => (
+						{animes.map((e, i) => (
 							<div key={i} className="relative transition duration-500 ease-in-out hover:scale-105">
 								<div className="w-full h-full">
 									<img src={e.image} alt="" className="h-full w-full rounded" />
@@ -69,7 +69,7 @@ const Comics = (props: Props) => {
 					</div>
 
 					<div className="pt-6 flex justify-center">
-						<Link href={'/comics'} className="md:hidden">
+						<Link href={'/anime'} className="md:hidden">
 							<div className="flex items-center gap-1 px-4 py-2 rounded shadow font-bold uppercase hover:bg-gray-100 transition duration-500 ease-in-out hover:scale-110 dark:shadow-gray-700 dark:hover:bg-gray-700 dark:text-white">
 								<p>see more</p>
 								<FiChevronRight size={20} />
@@ -82,4 +82,4 @@ const Comics = (props: Props) => {
 	)
 }
 
-export default Comics
+export default Anime

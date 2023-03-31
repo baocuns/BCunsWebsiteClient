@@ -63,13 +63,13 @@ const posts = [
 	// More posts...
 ]
 
-const Community = (props: Props) => {
+const Blog = (props: Props) => {
 	return (
 		<>
 			<div className="px-4 sm:px-8 md:px-12 lg:px-16 py-4 md:py-10">
 				<div className="flex justify-between pb-3 md:pb-6">
-					<h2 className="text-3xl lg:text-5xl font-bold dark:text-white">Community</h2>
-					<Link href={'/comics'} className="hidden md:block">
+					<h2 className="text-3xl lg:text-5xl font-bold dark:text-white">Blog</h2>
+					<Link href={'/blog'} className="hidden md:block">
 						<div className="flex items-center gap-1 px-4 py-2 rounded shadow font-bold uppercase hover:bg-gray-100 transition duration-500 ease-in-out hover:scale-110 dark:shadow-gray-700 dark:hover:bg-gray-700 dark:text-white">
 							<p>see more</p>
 							<FiChevronRight size={20} />
@@ -137,7 +137,7 @@ const Community = (props: Props) => {
 					</div>
 
 					<div className="pt-6 flex justify-center">
-						<Link href={'/comics'} className="md:hidden">
+						<Link href={'/blog'} className="md:hidden">
 							<div className="flex items-center gap-1 px-4 py-2 rounded shadow font-bold uppercase hover:bg-gray-100 transition duration-500 ease-in-out hover:scale-110 dark:shadow-gray-700 dark:hover:bg-gray-700 dark:text-white">
 								<p>see more</p>
 								<FiChevronRight size={20} />
@@ -150,4 +150,4 @@ const Community = (props: Props) => {
 	)
 }
 
-export default Community
+export default Blog
