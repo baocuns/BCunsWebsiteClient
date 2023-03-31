@@ -30,7 +30,7 @@ const News = (props: Props) => {
 							</div>
 							<Link href="#">
 								<span aria-hidden="true" className="absolute inset-0"></span>
-								<div className="absolute bottom-0 w-full bg-black/50 px-6 md:px-12 py-5 md:py-10 rounded-b">
+								<div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent px-6 md:px-12 py-5 md:py-10 rounded-b">
 									<p className="text-white font-bold text-sm md:text-3xl">
 										Prime Gaming and Riot Games Run it Back
 									</p>
