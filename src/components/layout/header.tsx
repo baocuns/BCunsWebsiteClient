@@ -1,16 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useEffect, useState, Fragment } from 'react'
 import { useTheme } from 'next-themes'
-import { CiBellOn, CiChat2, CiGrid41, CiLogin, CiLogout, CiSearch, CiUser } from 'react-icons/ci'
-import { MdDarkMode, MdLightMode } from 'react-icons/md'
+import {
+	CiAlignBottom,
+	CiGrid41,
+	CiHeart,
+	CiImageOn,
+	CiRead,
+	CiTimer,
+	CiYoutube,
+} from 'react-icons/ci'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import Search from '../Search'
-import { Popover, Transition } from '@headlessui/react'
+import { Dialog, Popover, Transition } from '@headlessui/react'
 
 import {
 	ArrowPathIcon,
-	Bars3Icon,
 	BookmarkSquareIcon,
 	CalendarIcon,
 	ChartBarIcon,
@@ -20,11 +26,12 @@ import {
 	PlayIcon,
 	ShieldCheckIcon,
 	Squares2X2Icon,
-	XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import OptionsBar from './optionsbar'
+import Menu from '../Menu'
+import Banner from '../Banner'
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
@@ -141,7 +148,14 @@ const Headers = (props: Props) => {
 	const handleOpenSearch = () => {
 		setIsSearch(!isSearch)
 	}
-	//** Open modal search */
+
+	//** Open menu */
+	const [isMenu, setIsMenu] = useState<boolean>(false)
+
+	const handleOpenMenu = () => {
+		setIsMenu(!isMenu)
+		console.log(isMenu)
+	}
 
 	return (
 		<>
@@ -151,6 +165,10 @@ const Headers = (props: Props) => {
 						isScrollDown ? 'is_scroll' : 'shadow'
 					}`}
 				>
+					{/* banner */}
+					<Banner />
+
+					{/* nav */}
 					<Popover className="relative bg-transparent">
 						<div className="mx-auto max-w-7xl px-6">
 							<div className="flex items-center justify-between py-3 md:justify-start md:space-x-10">
@@ -165,22 +183,26 @@ const Headers = (props: Props) => {
 									{/* option bar */}
 									<OptionsBar />
 
-									<Popover.Button className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+									<button
+										className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500 focus:outline-none"
+										onClick={handleOpenMenu}
+									>
 										<span className="sr-only">Open menu</span>
 										<CiGrid41 size={24} />
-									</Popover.Button>
+									</button>
 								</div>
 								<Popover.Group as="nav" className="hidden space-x-10 md:flex">
+									{/* comics */}
 									<Popover className="relative">
 										{({ open }) => (
 											<>
 												<Popover.Button
 													className={classNames(
-														open ? 'text-gray-900' : 'text-gray-500',
-														'group inline-flex items-center rounded-lg bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+														open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+														'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
 													)}
 												>
-													<span>Solutions</span>
+													<span>Comics</span>
 													<ChevronDownIcon
 														className={classNames(
 															open ? 'text-gray-600' : 'text-gray-400',
@@ -202,42 +224,135 @@ const Headers = (props: Props) => {
 													<Popover.Panel className="absolute z-0 -ml-4 mt-3 w-screen max-w-lg transform px-2 sm:px-0 md:left-1/2 md:ml-0 md:-translate-x-1/2">
 														<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
 															<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-																{solutions.map((item) => (
-																	<Link
-																		key={item.name}
-																		href={item.href}
-																		className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-																	>
-																		<item.icon
-																			className="h-6 w-6 flex-shrink-0 text-indigo-600"
-																			aria-hidden="true"
-																		/>
-																		<div className="ml-4">
-																			<p className="text-base font-medium text-gray-900">
-																				{item.name}
-																			</p>
-																			<p className="mt-1 text-sm text-gray-500">
-																				{item.description}
-																			</p>
-																		</div>
-																	</Link>
-																))}
+																<Link
+																	href={'/comics'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiImageOn size={25} className="text-indigo-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		All comics
+																	</span>
+																</Link>
+																<Link
+																	href={'/comics/playlist/ranks'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiAlignBottom size={25} className="text-green-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		Comics with the highest ratings
+																	</span>
+																</Link>
+																<Link
+																	href={'/comics/playlist/views'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiRead size={25} className="text-orange-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		Comics with the most views
+																	</span>
+																</Link>
+																<Link
+																	href={'/comics/playlist/likes'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiHeart size={25} className="text-red-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		Comics with the most likes
+																	</span>
+																</Link>
+																<Link
+																	href={'/comics/playlist/updates'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiTimer size={25} className="text-cyan-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		New updated comics
+																	</span>
+																</Link>
 															</div>
-															<div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
-																{callsToAction.map((item) => (
-																	<div key={item.name} className="flow-root">
-																		<Link
-																			href={item.href}
-																			className="-m-3 flex items-center rounded-lg p-3 text-base font-medium text-gray-900 hover:bg-gray-100"
-																		>
-																			<item.icon
-																				className="h-6 w-6 flex-shrink-0 text-gray-400"
-																				aria-hidden="true"
-																			/>
-																			<span className="ml-3">{item.name}</span>
-																		</Link>
-																	</div>
-																))}
+														</div>
+													</Popover.Panel>
+												</Transition>
+											</>
+										)}
+									</Popover>
+									{/* anime */}
+									<Popover className="relative">
+										{({ open }) => (
+											<>
+												<Popover.Button
+													className={classNames(
+														open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+														'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
+													)}
+												>
+													<span>Anime</span>
+													<ChevronDownIcon
+														className={classNames(
+															open ? 'text-gray-600' : 'text-gray-400',
+															'ml-2 h-5 w-5 group-hover:text-gray-500'
+														)}
+														aria-hidden="true"
+													/>
+												</Popover.Button>
+
+												<Transition
+													as={Fragment}
+													enter="transition ease-out duration-200"
+													enterFrom="opacity-0 translate-y-1"
+													enterTo="opacity-100 translate-y-0"
+													leave="transition ease-in duration-150"
+													leaveFrom="opacity-100 translate-y-0"
+													leaveTo="opacity-0 translate-y-1"
+												>
+													<Popover.Panel className="absolute z-0 -ml-4 mt-3 w-screen max-w-lg transform px-2 sm:px-0 md:left-1/2 md:ml-0 md:-translate-x-1/2">
+														<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+															<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+																<Link
+																	href={'/anime'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiYoutube size={25} className="text-indigo-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		All anime
+																	</span>
+																</Link>
+																<Link
+																	href={'/anime/playlist/ranks'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiAlignBottom size={25} className="text-green-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		Anime with the highest ratings
+																	</span>
+																</Link>
+																<Link
+																	href={'/anime/playlist/views'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiRead size={25} className="text-orange-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		Anime with the most views
+																	</span>
+																</Link>
+																<Link
+																	href={'/anime/playlist/likes'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiHeart size={25} className="text-red-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		Anime with the most likes
+																	</span>
+																</Link>
+																<Link
+																	href={'/anime/playlist/updates'}
+																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+																>
+																	<CiTimer size={25} className="text-cyan-600" />
+																	<span className="ml-3 text-base font-medium text-gray-900">
+																		New updated anime
+																	</span>
+																</Link>
 															</div>
 														</div>
 													</Popover.Panel>
@@ -246,16 +361,14 @@ const Headers = (props: Props) => {
 										)}
 									</Popover>
 
-									<Link href={'/comics'}>
-										<p className="text-base font-medium text-gray-500 hover:text-gray-900">
-											Comics
-										</p>
+									<Link href={'/news'}>
+										<p className="text-base font-medium text-gray-500 hover:text-gray-900">News</p>
 									</Link>
 									<Link
-										href="#"
+										href="blog"
 										className="text-base font-medium text-gray-500 hover:text-gray-900"
 									>
-										Docs
+										Blog
 									</Link>
 
 									<Popover className="relative">
@@ -263,11 +376,11 @@ const Headers = (props: Props) => {
 											<>
 												<Popover.Button
 													className={classNames(
-														open ? 'text-gray-900' : 'text-gray-500',
-														'group inline-flex items-center rounded-lg bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+														open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+														'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
 													)}
 												>
-													<span>More</span>
+													<span>Docs</span>
 													<ChevronDownIcon
 														className={classNames(
 															open ? 'text-gray-600' : 'text-gray-400',
@@ -352,104 +465,14 @@ const Headers = (props: Props) => {
 								</div>
 							</div>
 						</div>
-
-						<Transition
-							as={Fragment}
-							enter="duration-200 ease-out"
-							enterFrom="opacity-0 scale-95"
-							enterTo="opacity-100 scale-100"
-							leave="duration-100 ease-in"
-							leaveFrom="opacity-100 scale-100"
-							leaveTo="opacity-0 scale-95"
-						>
-							<Popover.Panel
-								focus
-								className="absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden z-50"
-							>
-								<div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-									<div className="px-5 pt-5 pb-6">
-										<div className="flex items-center justify-between">
-											<div>
-												<img
-													className="h-8 w-auto"
-													src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-													alt="Your Company"
-												/>
-											</div>
-											<div className="-mr-2">
-												<Popover.Button className="inline-flex items-center justify-center rounded-lg bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-													<span className="sr-only">Close menu</span>
-													<XMarkIcon className="h-6 w-6" aria-hidden="true" />
-												</Popover.Button>
-											</div>
-										</div>
-										<div className="mt-6">
-											<nav className="grid gap-y-8">
-												{solutions.map((item) => (
-													<Link
-														key={item.name}
-														href={item.href}
-														className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-													>
-														<item.icon
-															className="h-6 w-6 flex-shrink-0 text-indigo-600"
-															aria-hidden="true"
-														/>
-														<span className="ml-3 text-base font-medium text-gray-900">
-															{item.name}
-														</span>
-													</Link>
-												))}
-											</nav>
-										</div>
-									</div>
-									<div className="space-y-6 py-6 px-5">
-										<div className="grid grid-cols-2 gap-y-4 gap-x-8">
-											<Link
-												href="#"
-												className="text-base font-medium text-gray-900 hover:text-gray-700"
-											>
-												Pricing
-											</Link>
-
-											<Link
-												href="#"
-												className="text-base font-medium text-gray-900 hover:text-gray-700"
-											>
-												Docs
-											</Link>
-											{resources.map((item) => (
-												<Link
-													key={item.name}
-													href={item.href}
-													className="text-base font-medium text-gray-900 hover:text-gray-700"
-												>
-													{item.name}
-												</Link>
-											))}
-										</div>
-										<div>
-											<Link
-												href="#"
-												className="flex w-full items-center justify-center rounded-lg border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-											>
-												Sign up
-											</Link>
-											<p className="mt-6 text-center text-base font-medium text-gray-500">
-												Existing customer?{' '}
-												<Link href="#" className="text-indigo-600 hover:text-indigo-500">
-													Sign in
-												</Link>
-											</p>
-										</div>
-									</div>
-								</div>
-							</Popover.Panel>
-						</Transition>
 					</Popover>
 				</div>
 			</div>
+
+			{/* serach */}
 			<Search open={isSearch} handleCallback={handleOpenSearch} />
+			{/* menu mobile */}
+			<Menu open={isMenu} handleCallback={handleOpenMenu} />
 		</>
 	)
 }

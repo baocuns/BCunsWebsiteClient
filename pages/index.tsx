@@ -69,9 +69,6 @@ export default function Home(props: Props) {
 				/>
 			</Head>
 			<main>
-				{/* banner */}
-				<Banner />
-
 				{/* slider */}
 				<Carousel images={images} />
 
