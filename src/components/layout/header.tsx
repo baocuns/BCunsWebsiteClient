@@ -32,6 +32,7 @@ import Link from 'next/link'
 import OptionsBar from './optionsbar'
 import Menu from '../Menu'
 import Banner from '../Banner'
+// import { supabase } from '../../config/supabase'
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
@@ -126,6 +127,53 @@ const Headers = (props: Props) => {
 	//** Event scroll animation header */
 	const [isScrollDown, setIsScrollDown] = useState(false)
 	const [valueScy, setValueScy] = useState(0)
+	const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row']>()
+
+	//*********************************** Event proile */
+	useEffect(() => {
+		supabase
+			.from('profiles')
+			.select()
+			.eq('uid', session?.user.id)
+			.single()
+			.then(({ data, error, status }) => {
+				if (data) {
+					setProfile(data)
+				}
+			})
+	}, [session?.user.id, supabase])
+	useEffect(() => {
+		const channel = supabase
+			.channel('realtime_profiles')
+			.on(
+				'postgres_changes',
+				{ event: 'UPDATE', schema: 'public', table: 'profiles' },
+				(payload) => {
+					// console.log('payload: ', payload)
+					if (session?.user.id === payload.new?.uid) {
+						setProfile({
+							id: payload.new.id,
+							uid: payload.new.uid,
+							bcuns_id: payload.new.bcuns_id,
+							full_name: payload.new.full_name,
+							story: payload.new.story,
+							avatar_url: payload.new.avatar_url,
+							is_block: payload.new.is_block,
+							is_public: payload.new.is_public,
+						})
+					}
+				}
+			)
+			.subscribe()
+
+		return () => {
+			supabase.removeChannel(channel)
+		}
+	}, [session?.user.id, supabase])
+	useEffect(() => {
+		!session && setProfile(undefined)
+	}, [session])
+	//********************************** Event proile */
 
 	const handleScroll = useCallback(() => {
 		if (window.scrollY > valueScy) {
@@ -154,14 +202,14 @@ const Headers = (props: Props) => {
 
 	const handleOpenMenu = () => {
 		setIsMenu(!isMenu)
-		console.log(isMenu)
+		// console.log(isMenu)
 	}
 
 	return (
 		<>
 			<div className="h-20">
 				<div
-					className={`fixed w-full animation_scroll z-20 bg-white/90 dark:bg-gray-800 dark:shadow-gray-700 ${
+					className={`fixed w-full animation_scroll z-20 bg-white/90 dark:bg-gray-800/90 dark:shadow-gray-700 ${
 						isScrollDown ? 'is_scroll' : 'shadow'
 					}`}
 				>
@@ -181,10 +229,10 @@ const Headers = (props: Props) => {
 								</div>
 								<div className="-my-2 -mr-2 md:hidden flex">
 									{/* option bar */}
-									<OptionsBar />
+									<OptionsBar profile={profile} />
 
 									<button
-										className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500 focus:outline-none"
+										className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500 focus:outline-none dark:text-white"
 										onClick={handleOpenMenu}
 									>
 										<span className="sr-only">Open menu</span>
@@ -461,7 +509,7 @@ const Headers = (props: Props) => {
 
 								{/* option bar */}
 								<div className="hidden items-center justify-end md:flex md:flex-1 md:w-0">
-									<OptionsBar />
+									<OptionsBar profile={profile} />
 								</div>
 							</div>
 						</div>

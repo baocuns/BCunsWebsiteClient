@@ -66,7 +66,7 @@ export default function Home(props: Props) {
 			dispatch(callApiSuccess(true))
 		}
 		func()
-	}, [])
+	}, [dispatch, supabase])
 
 	return (
 		<>

@@ -78,9 +78,9 @@ const Blog = (props: Props) => {
 				</div>
 				<div className="py-6">
 					<div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-						{posts.map((post) => (
+						{posts.map((post, i) => (
 							<article
-								key={post.id}
+								key={i}
 								className="flex max-w-xl flex-col items-start justify-between shadow rounded transition duration-500 ease-in-out hover:scale-105 dark:shadow-gray-700"
 							>
 								<div className="mb-4">

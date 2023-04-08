@@ -6,7 +6,7 @@ import { CiEdit } from 'react-icons/ci'
 import { BsCheck2, BsX } from 'react-icons/bs'
 import TextareaAutosize from 'react-textarea-autosize'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { storageClient } from '../../config/supabse'
+import { storageClient } from '../../config/supabase'
 import { useDispatch } from 'react-redux'
 import { callApiStart, callApiSuccess } from '../../redux/slices/apiSlice'
 import { useRouter } from 'next/router'
@@ -19,6 +19,8 @@ type Props = {
 	profile: Profiles
 }
 
+const routerID = ['auth', 'comics', 'Emm']
+
 const EditProfile = (props: Props) => {
 	const router = useRouter()
 	const dispatch = useDispatch()
@@ -27,6 +29,9 @@ const EditProfile = (props: Props) => {
 	const [avatarUrl, setAvatarUrl] = useState<string>()
 	const [profile, setProfile] = useState<Profiles>(props.profile)
 	const [profileOld, setProfileOld] = useState<Profiles>(props.profile)
+	const [isBcunsId, setIsBcunsId] = useState<boolean>(true)
+	const [isLoad, setIsLoad] = useState<boolean>(false)
+
 	const handleProfileChange = (
 		event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
 	) => {
@@ -58,71 +63,78 @@ const EditProfile = (props: Props) => {
 	// ------------------------ Submit update profile
 	const handleSubmitUpdateProfile = () => {
 		dispatch(callApiStart())
-		if (file) {
-			storageClient
-				.from('profiles')
-				.upload(`${profile.uid}/avatar`, file, {
-					upsert: true,
-				})
-				.then(({ data, error }) => {
-					if (data) {
-						const pf = {
-							...profile,
-							['updated_at']: new Date().toISOString(),
+		if (isBcunsId) {
+			if (file) {
+				storageClient
+					.from('profiles')
+					.upload(`${profile.uid}/avatar`, file, {
+						upsert: true,
+					})
+					.then(({ data, error }) => {
+						if (data) {
+							const pf = {
+								...profile,
+								['updated_at']: new Date().toISOString(),
+							}
+							supabase
+								.from('profiles')
+								.update(pf)
+								.eq('id', pf.id)
+								.then((res) => {
+									// console.log('res: if', res)
+									dispatch(callApiSuccess(res))
+									handleCloseModals()
+									router.push(`/${pf.bcuns_id}`)
+								})
 						}
-						supabase
-							.from('profiles')
-							.update(pf)
-							.eq('id', pf.id)
-							.then((res) => {
-								console.log('res: if', res)
-								dispatch(callApiSuccess(res))
-								handleCloseModals()
-								router.push(`/${pf.bcuns_id}`)
-							})
-					}
-				})
-		} else {
-			const pf = {
-				...profile,
-				['updated_at']: new Date().toISOString(),
+					})
+			} else {
+				const pf = {
+					...profile,
+					['updated_at']: new Date().toISOString(),
+				}
+				supabase
+					.from('profiles')
+					.update(pf)
+					.eq('id', pf.id)
+					.then((res) => {
+						// console.log('res: ', res)
+						dispatch(callApiSuccess(res))
+						handleCloseModals()
+						router.push(`/${pf.bcuns_id}`)
+					})
 			}
-			supabase
-				.from('profiles')
-				.update(pf)
-				.eq('id', pf.id)
-				.then((res) => {
-					console.log('res: ', res)
-					dispatch(callApiSuccess(res))
-					handleCloseModals()
-					router.push(`/${pf.bcuns_id}`)
-				})
+		} else {
+
 		}
 	}
 
 	// check bcuns id on change
-	const [isBcunsId, setIsBcunsId] = useState<boolean>(true)
-	const [isLoad, setIsLoad] = useState<boolean>(false)
 	useEffect(() => {
 		var timer: string | number | NodeJS.Timeout | undefined = 0
 		if (profile.bcuns_id !== profileOld.bcuns_id) {
-			timer = setTimeout(() => {
-				setIsLoad(true)
-				supabase
-					.from('profiles')
-					.select()
-					.eq('bcuns_id', profile.bcuns_id)
-					.single()
-					.then(({ data, error }) => {
-						if (error) {
-							setIsBcunsId(true)
-						}
-						if (data) {
-							setIsBcunsId(false)
-						}
-						setIsLoad(false)
-					})
-			}, 1000)
+			setIsLoad(true)
+			if (routerID.some((e) => e === profile.bcuns_id) || profile.bcuns_id.length < 5) {
+				setIsBcunsId(false)
+				setIsLoad(false)
+			} else {
+				timer = setTimeout(() => {
+					supabase
+						.from('profiles')
+						.select()
+						.eq('bcuns_id', profile.bcuns_id)
+						.single()
+						.then(({ data, error }) => {
+							if (error) {
+								setIsBcunsId(true)
+							}
+							if (data) {
+								setIsBcunsId(false)
+							}
+							setIsLoad(false)
+						})
+				}, 1000)
+			}
 		}
 
 		return () => {
@@ -256,10 +268,15 @@ const EditProfile = (props: Props) => {
 											</div>
 										</div>
 										<div className="px-6 py-2">
-											<div className="text-xs pb-2 text-black italic">www.baocuns.com/baocuns</div>
+											<div
+												className={`text-xs pb-2 italic ${
+													isBcunsId ? 'text-black' : 'text-red-600'
+												}`}
+											>
+												www.baocuns.com/{profile.bcuns_id}
+											</div>
 											<div className="text-xs text-black italic">
-												BCuns ID chỉ có thể bao gồm chữ cái, chữ số, dấu gạch dưới và dấu chấm. Khi
-												thay đổi BCuns ID, liên kết hồ sơ của bạn cũng sẽ thay đổi. Hệ thông khuyết
+												BCuns ID là chuỗi có 5 ký tự trở lên, chỉ có thể bao gồm chữ cái, chữ số, dấu gạch dưới và dấu chấm. Khi thay đổi BCuns ID, liên kết hồ sơ của bạn cũng sẽ thay đổi. Hệ thông khuyết
 												khích nên đặt BCuns ID đơn giản, ngắn gọn dễ nhớ.
 											</div>
 										</div>
