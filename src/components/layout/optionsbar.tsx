@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useEffect, useState, Fragment } from 'react'
 import { useTheme } from 'next-themes'
-import { CiBellOn, CiChat2, CiGrid41, CiLogin, CiLogout, CiSearch, CiUser } from 'react-icons/ci'
+import { CiBellOn, CiChat2, CiLogin, CiLogout, CiSearch, CiUser } from 'react-icons/ci'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -20,16 +20,9 @@ const callsToAction = [
 	{ name: 'Contact Sales', href: '#', icon: PhoneIcon },
 ]
 
-const profiles = [
-	{
-		name: 'Light/Dark',
-		description: 'Adjust the light your way!',
-		href: '#',
-		icon: ChartBarIcon,
-	},
-]
-
-type Props = {}
+type Props = {
+	profile: Database['public']['Tables']['profiles']['Row'] | undefined
+}
 
 const OptionsBar = (props: Props) => {
 	//** default */
@@ -40,9 +33,12 @@ const OptionsBar = (props: Props) => {
 
 	//** Open modal search */
 	const [isSearch, setIsSearch] = useState<boolean>(false)
+
+	// function
 	const handleOpenSearch = () => {
 		setIsSearch(!isSearch)
 	}
+
 	//** Open modal search */
 	return (
 		<>
@@ -50,20 +46,20 @@ const OptionsBar = (props: Props) => {
 				{/* Search */}
 				<button
 					type="button"
-					className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500"
+					className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black"
 					onClick={handleOpenSearch}
 				>
 					<span className="sr-only">Open search</span>
 					<CiSearch size={24} />
 				</button>
 				{/* Dark/Light */}
-				<button
+				{/* <button
 					type="button"
 					className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500"
 					onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
 				>
 					{theme === 'dark' ? <MdDarkMode size={24} /> : <MdLightMode size={24} />}
-				</button>
+				</button> */}
 				{/* notification */}
 				<Popover className="">
 					{({ open }) => (
@@ -71,7 +67,7 @@ const OptionsBar = (props: Props) => {
 							<Popover.Button
 								className={classNames(
 									open ? 'animate-bounce text-red-500' : 'text-black',
-									'group relative inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500'
+									'group relative inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black'
 								)}
 							>
 								<span className="absolute top-2 right-2 flex h-3 w-3">
@@ -94,27 +90,20 @@ const OptionsBar = (props: Props) => {
 								<Popover.Panel className="absolute w-screen max-w-xs md:max-w-md right-10">
 									<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
 										<div className="py-4 px-8 border-b">
-											<p>Messenger</p>
+											<p>Notification</p>
 										</div>
 										<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-											{profiles.map((item) => (
-												<Link
-													key={item.name}
-													href={item.href}
-													className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-												>
-													<item.icon
-														className="h-6 w-6 flex-shrink-0 text-indigo-600"
-														aria-hidden="true"
-													/>
-													<div className="ml-4">
-														<p className="text-base font-medium text-gray-900">{item.name}</p>
-														<p className="mt-1 text-sm text-gray-500">{item.description}</p>
-													</div>
-												</Link>
-											))}
+											<Link
+												href={'item.href'}
+												className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
+											>
+												<div className="ml-4">
+													<p className="text-base font-medium text-gray-900">item.name</p>
+													<p className="mt-1 text-sm text-gray-500">item.description</p>
+												</div>
+											</Link>
 										</div>
-                                        <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
+										<div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
 											{callsToAction.map((item) => (
 												<div key={item.name} className="flow-root">
 													<Link
@@ -143,7 +132,7 @@ const OptionsBar = (props: Props) => {
 							<Popover.Button
 								className={classNames(
 									open ? 'animate-bounce text-red-500' : 'text-black',
-									'group relative inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500'
+									'group relative inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black'
 								)}
 							>
 								<span className="absolute top-2 right-2 flex h-3 w-3">
@@ -169,22 +158,7 @@ const OptionsBar = (props: Props) => {
 											<p>Messenger</p>
 										</div>
 										<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-											{profiles.map((item) => (
-												<Link
-													key={item.name}
-													href={item.href}
-													className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-												>
-													<item.icon
-														className="h-6 w-6 flex-shrink-0 text-indigo-600"
-														aria-hidden="true"
-													/>
-													<div className="ml-4">
-														<p className="text-base font-medium text-gray-900">{item.name}</p>
-														<p className="mt-1 text-sm text-gray-500">{item.description}</p>
-													</div>
-												</Link>
-											))}
+											ABC
 										</div>
 										<div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
 											{callsToAction.map((item) => (
@@ -215,7 +189,7 @@ const OptionsBar = (props: Props) => {
 							<Popover.Button
 								className={classNames(
 									open ? 'animate-bounce text-red-500' : 'text-black',
-									'group inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500'
+									'group inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black'
 								)}
 							>
 								<CiUser size={24} />
@@ -232,42 +206,64 @@ const OptionsBar = (props: Props) => {
 							>
 								<Popover.Panel className="absolute w-screen max-w-xs md:max-w-md right-10">
 									<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
-										<div className="py-4 px-8 border-b">
-											<p>Say Hi</p>
+										<div className="flex gap-2 py-4 px-8 border-b">
+											<p className="text-black">Say Hi</p>
+											<p className="font-bold text-black">
+												{props.profile ? props.profile.full_name : 'User'}
+											</p>
 										</div>
 										<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-											{profiles.map((item) => (
-												<Link
-													key={item.name}
-													href={item.href}
-													className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-												>
-													<item.icon
-														className="h-6 w-6 flex-shrink-0 text-indigo-600"
-														aria-hidden="true"
-													/>
-													<div className="ml-4">
-														<p className="text-base font-medium text-gray-900">{item.name}</p>
-														<p className="mt-1 text-sm text-gray-500">{item.description}</p>
-													</div>
-												</Link>
-											))}
+											<Link
+												href={
+													props.profile
+														? '/' + props.profile?.bcuns_id
+														: `/auth/login?redirect=${router.asPath}`
+												}
+												className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+											>
+												<CiUser size={25} className="text-red-600" />
+												<span className="ml-3 text-base font-normal text-gray-900">
+													Your profile
+												</span>
+											</Link>
 										</div>
 										<div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
-											{callsToAction.map((item) => (
-												<div key={item.name} className="flow-root">
-													<Link
-														href={item.href}
-														className="-m-3 flex items-center rounded-lg p-3 text-base font-medium text-gray-900 hover:bg-gray-100"
+											<div className="flex w-full justify-between md:justify-start md:gap-10">
+												{/* login/logout */}
+												{session ? (
+													<button
+														type="button"
+														className="-m-3 flex items-center rounded-lg p-3 text-base font-normal text-gray-900 hover:bg-gray-100"
+														onClick={() => supabase.auth.signOut()}
 													>
-														<item.icon
-															className="h-6 w-6 flex-shrink-0 text-gray-400"
-															aria-hidden="true"
-														/>
-														<span className="ml-3">{item.name}</span>
-													</Link>
-												</div>
-											))}
+														<CiLogout size={24} />
+														<span className="ml-3">Logout</span>
+													</button>
+												) : (
+													<button
+														type="button"
+														className="-m-3 flex items-center rounded-lg p-3 text-base font-normal text-gray-900 hover:bg-gray-100"
+														onClick={() => router.push(`/auth/login?redirect=${router.asPath}`)}
+													>
+														<CiLogin size={24} />
+														<span className="ml-3">Login</span>
+													</button>
+												)}
+
+												{/* light/dark */}
+												<button
+													type="button"
+													className="-m-3 flex items-center rounded-lg p-3 text-base font-normal text-gray-900 hover:bg-gray-100"
+													onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+												>
+													{theme === 'dark' ? <MdDarkMode size={24} /> : <MdLightMode size={24} />}
+													{theme === 'dark' ? (
+														<span className="ml-3">Dark</span>
+													) : (
+														<span className="ml-3">Light</span>
+													)}
+												</button>
+											</div>
 										</div>
 									</div>
 								</Popover.Panel>
@@ -276,7 +272,7 @@ const OptionsBar = (props: Props) => {
 					)}
 				</Popover>
 				{/* Login/Logout */}
-				{session ? (
+				{/* {session ? (
 					<button
 						type="button"
 						className="inline-flex items-center justify-center rounded-lg p-2 text-black hover:bg-gray-100 hover:text-green-500"
@@ -292,7 +288,7 @@ const OptionsBar = (props: Props) => {
 					>
 						<CiLogin size={24} />
 					</button>
-				)}
+				)} */}
 			</div>
 			<Search open={isSearch} handleCallback={handleOpenSearch} />
 		</>

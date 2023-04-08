@@ -45,7 +45,7 @@ const Signup = (props: Props) => {
 
 	const handleSignup = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		console.log(isPassword);
+		// console.log(isPassword);
 		
 		!isPassword &&
 			supabase.auth

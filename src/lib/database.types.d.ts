@@ -178,7 +178,7 @@ interface Database {
 				Row: {
 					id: number
 					uid: string
-					bcuns_id: string | string[] | undefined
+					bcuns_id: string
 					full_name: string | undefined
 					story: string | undefined
 					avatar_url: string | undefined
@@ -187,7 +187,7 @@ interface Database {
 				}
 				Insert: {
 					uid?: string
-					bcuns_id?: string | string[] | undefined
+					bcuns_id?: string
 					full_name?: string | undefined
 					story?: string | undefined
 					avatar_url?: string | undefined
@@ -196,7 +196,7 @@ interface Database {
 				}
 				Update: {
 					id: string
-					bcuns_id?: string | null
+					bcuns_id?: string
 					full_name?: string | null
 					story?: string | null
 					avatar_url?: string | null
