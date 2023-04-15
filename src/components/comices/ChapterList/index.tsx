@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { CiRead } from 'react-icons/ci'
 import { VscListSelection } from 'react-icons/vsc'
 import dayjs from 'dayjs'
-import { numberFormat } from '../../lib'
+import { numberFormat } from '../../../lib'
 import { useRouter } from 'next/router'
 
 type Props = {

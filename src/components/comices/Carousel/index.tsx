@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci'
-import { classNames } from '../../lib'
+import { classNames } from '../../../lib'
 
 type Props = {
 	images: Array<{
