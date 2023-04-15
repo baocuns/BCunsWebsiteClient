@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { FaStar } from 'react-icons/fa'
-import { classNames } from '../../lib'
+import { classNames } from '../../../lib'
 
 type Props = {
 	link: string

@@ -173,7 +173,7 @@ interface Database {
 				}
 			}
 
-			// ---------------------------------------------- current
+			// ---------------------------------------------- info
 			profiles: {
 				Row: {
 					id: number
@@ -204,6 +204,7 @@ interface Database {
 					is_public?: number
 				}
 			}
+			// ---------------------------------------------- comics
 			comics: {
 				Row: {
 					id: number
@@ -268,6 +269,37 @@ interface Database {
 					chapter_id: string
 					title: string
 					url: string
+				}
+			}
+			//---------------------------------------------- anime
+			anime: {
+				Row: {
+					id: string
+					uid: string
+					title: string
+					like: Json
+					view: number
+					rating: number
+					author: string
+					categories: Json
+					description: string
+					thumbnails: string
+					is_publish: boolean
+					is_nominate: boolean //là đề cử
+					created_at: string
+					updated_at: string
+					episodes: Array<Database['public']['Tables']['episodes']['Row']>
+				}
+			}
+			episodes: {
+				Row: {
+					id: string
+					anime_id: string
+					title: string
+					description: string
+					video: string
+					created_at: string
+					updated_at: string
 				}
 			}
 
