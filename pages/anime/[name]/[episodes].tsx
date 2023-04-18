@@ -43,7 +43,7 @@ const Episodes = (props: Props) => {
 		supabase
 			.from('episodes')
 			.select('*')
-			.eq('anime_id', '2')
+			.eq('anime_id', episodes.anime_id)
 			.then(({ data, error }) => {
 				if (data) {
 					setEpisodesList(data)
