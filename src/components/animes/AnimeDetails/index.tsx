@@ -127,7 +127,7 @@ const AnimeDetails = (props: Props) => {
 						<div className="flex flex-col sm:flex-row font-normal mt-4 justify-center sm:justify-start">
 							<div className="m-2">
 								<Link
-									href={`/anime/${slug(anime.episodes[0].title)}/episodes-${anime.episodes[0].id}`}
+									href={`/anime/${slug(anime.episodes[0].title)}-${anime.id}/episodes-${anime.episodes[0].id}`}
 								>
 									<div className="flex items-center gap-2 py-2 px-8 font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:bg-gradient-to-l hover:scale-110 transition duration-500 ease-in-out rounded text-white hover:shadow-lg hover:shadow-red-500">
 										<CiPlay1 />
@@ -137,7 +137,7 @@ const AnimeDetails = (props: Props) => {
 							</div>
 							<div className="m-2">
 								<Link
-									href={`/anime/${slug(anime.episodes[0].title)}/episodes-${
+									href={`/anime/${slug(anime.episodes[0].title)}-${anime.id}/episodes-${
 										anime.episodes[anime.episodes.length - 1].id
 									}`}
 								>
