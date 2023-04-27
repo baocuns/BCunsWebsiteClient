@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import { AnimeDetails, AnimeEpisodes, Breadcrumbs, SEO } from '../../../src/components'
+import { AnimeDetails, AnimeEpisodes, Breadcrumbs, SEO, VideoPlayer } from '../../../src/components'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSidePropsContext } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
@@ -37,7 +37,7 @@ const Episodes = (props: Props) => {
 
 	const [episodesList, setEpisodesList] =
 		useState<Array<Database['public']['Tables']['episodes']['Row']>>()
-	const [anime, setAnime] = useState<Database['public']['Tables']['anime']['Row'] | any>()
+	const [anime, setAnime] = useState<Database['public']['Tables']['anime']['Row']>()
 
 	useEffect(() => {
 		supabase
@@ -95,9 +95,8 @@ const Episodes = (props: Props) => {
 						},
 					]}
 				/>
-				<div className="flex justify-center md:px-36 lg:px-52">
-					<video className="h-auto object-cover rounded" controls src={episodes?.video} />
-				</div>
+				{/* video player */}
+				<VideoPlayer thumbnails={anime?.poster} video={episodes?.video} />
 				{/* Episodes */}
 				<AnimeEpisodes episodes={episodesList} />
 				{/* details */}

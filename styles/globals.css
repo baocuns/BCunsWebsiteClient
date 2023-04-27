@@ -24,4 +24,12 @@
 		transition-property: opacity;
 		transform: none;
 	}
+	.anime_progress::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 15px;
+		/* height: 15px; */
+		background: #22c55e;
+		cursor: pointer;
+		border-radius: 100%;
+	}
 }

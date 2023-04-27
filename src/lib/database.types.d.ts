@@ -284,6 +284,7 @@ interface Database {
 					categories: Json
 					description: string
 					thumbnails: string
+					poster: strings
 					is_publish: boolean
 					is_nominate: boolean //là đề cử
 					created_at: string
