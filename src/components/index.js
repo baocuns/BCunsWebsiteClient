@@ -21,6 +21,7 @@ import AnimeDetails from './animes/AnimeDetails'
 import AnimeEpisodes from './animes/AnimeEpisodes'
 import Breadcrumbs from './Breadcrumbs'
 import AnimeCardList from './animes/AnimeCardList'
+import VideoPlayer from './VideoPlayer'
 
 export {
     ChapterList,
@@ -46,4 +47,5 @@ export {
     AnimeEpisodes,
     Breadcrumbs,
     AnimeCardList,
+    VideoPlayer,
 }
