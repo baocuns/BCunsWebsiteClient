@@ -33,7 +33,7 @@ const ChapterList = (props: Props) => {
 									<i>{dayjs(e.created_at).fromNow()}</i>
 								</div>
 								<div className="flex items-center">
-									<div className="mr-2">{numberFormat(e.view?.length, 1)}</div>
+									<div className="mr-2">{numberFormat(e.view, 1)}</div>
 									<div>
 										<CiRead size={18} />
 									</div>

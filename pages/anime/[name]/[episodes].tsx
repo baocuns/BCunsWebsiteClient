@@ -2,10 +2,12 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import { AnimeDetails, AnimeEpisodes, Breadcrumbs, SEO, VideoPlayer } from '../../../src/components'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSidePropsContext } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { BiHomeSmile } from 'react-icons/bi'
+import { useRouter } from 'next/router'
+import { IncreaseViewsAnimes, IncreaseViewsEpisodes } from '../../../src/lib'
 const slug = require('slug')
 
 type Props = {
@@ -34,6 +36,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 const Episodes = (props: Props) => {
 	const { episodes } = props
 	const supabase = useSupabaseClient<Database>()
+	const session = useSession()
+	const router = useRouter()
 
 	const [episodesList, setEpisodesList] =
 		useState<Array<Database['public']['Tables']['episodes']['Row']>>()
@@ -61,6 +65,19 @@ const Episodes = (props: Props) => {
 				}
 			})
 	}, [episodes.anime_id, supabase])
+
+	useEffect(() => {
+		// check logged in user
+		if (!session) {
+			router.push(`/auth/login?redirect=${router.asPath}`)
+		} else {
+			// logged - view
+			IncreaseViewsAnimes(1, episodes.anime_id, supabase)
+			IncreaseViewsEpisodes(1, episodes.id, supabase)
+		}
+
+		return () => {}
+	}, [episodes.anime_id, episodes.id, router, session, supabase])
 
 	return (
 		<>

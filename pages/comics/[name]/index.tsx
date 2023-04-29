@@ -3,8 +3,10 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ChapterList, DetailsComic, SEO } from '../../../src/components'
+import { IncreaseViewsComics } from '../../../src/lib'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 type Props = {
 	data: Database['public']['Tables']['comics']['Row']
@@ -30,6 +32,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 const Comic = (props: Props) => {
 	const { data, url } = props
 	const router = useRouter()
+	const supabase = useSupabaseClient<Database>()
+
+	useEffect(() => {
+		IncreaseViewsComics(1, 12, supabase)
+	} ,[supabase])
 
 	return (
 		<>

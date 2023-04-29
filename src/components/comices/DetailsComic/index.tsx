@@ -36,7 +36,7 @@ const DetailsComic = (props: Props) => {
 				</div>
 				<div className="col-span-3">
 					<div className="mt-8 sm:mt-2">
-						<div className="text-2xl font-semibold">{comic.title}</div>
+						<h1 className="text-2xl font-semibold">{comic.title}</h1>
 						<div className="flex font-light mt-4">
 							<div className="mx-2 flex items-center">
 								<CiTimer size={18} />
