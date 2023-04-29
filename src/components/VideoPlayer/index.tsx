@@ -10,6 +10,7 @@ import {
 	FaVolumeUp,
 } from 'react-icons/fa'
 import { IoSettingsSharp } from 'react-icons/io5'
+import { classNames } from '../../lib'
 
 type Props = {
 	thumbnails: string | undefined
@@ -18,6 +19,7 @@ type Props = {
 
 const VideoPlayer = (props: Props) => {
 	const { thumbnails, video } = props
+	const [screenWidth, setScreenWidth] = useState(0)
 
 	const videoRef = useRef<HTMLVideoElement | null | any>()
 	const divRef = useRef<HTMLDivElement | null | any>()
@@ -63,7 +65,7 @@ const VideoPlayer = (props: Props) => {
 	}
 	const handleOnPress = () => {
 		if (videoRef.current?.buffered?.length > 0) {
-			setTimeBuffered(videoRef.current.buffered.end(0))
+			setTimeBuffered(videoRef.current.buffered.end(videoRef.current.buffered.length - 1))
 		}
 	}
 
@@ -121,10 +123,14 @@ const VideoPlayer = (props: Props) => {
 		return () => clearInterval(interval)
 	}, [isPlay])
 
-	//
+	// on load start app
 	useEffect(() => {
 		videoRef.current && setVideoTime(videoRef.current.duration)
 		videoRef.current && setVolume(videoRef.current.volume)
+
+		const handleResize = () => setScreenWidth(window.innerWidth)
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
 	}, [])
 
 	return (
@@ -132,9 +138,10 @@ const VideoPlayer = (props: Props) => {
 			<div
 				ref={divRef}
 				onMouseMove={(e) => handleOnMouse(e)}
-				className={`flex relative justify-center md:mx-36 lg:mx-52 ${
+				className={classNames(
+					'flex relative justify-center items-center md:mx-36 lg:mx-52',
 					isProgressBar ? '' : 'cursor-none'
-				}`}
+				)}
 			>
 				<div className="absolute inset-0 z-10 group">
 					<div
@@ -186,12 +193,12 @@ const VideoPlayer = (props: Props) => {
 								{/* play/pause */}
 								<button
 									onClick={() => setIsPlay(!isPlay)}
-									className="cursor-pointer text-white hover:text-green-500"
+									className="cursor-pointer text-white hover:text-green-500 pr-2"
 								>
 									{isPlay ? <FaPause size={20} /> : <FaPlay size={20} />}
 								</button>
 								{/* volume */}
-								<div className="relative flex justify-center group/volume">
+								<div className="relative flex justify-center group/volume pr-2">
 									<div className="-rotate-90 absolute group-hover/volume:flex hidden items-center -top-14 pl-6">
 										<div className="py-1 px-2 bg-white/70 rounded-full flex">
 											<input
@@ -219,7 +226,7 @@ const VideoPlayer = (props: Props) => {
 									</button>
 								</div>
 								{/* time line */}
-								<p className="text-white">
+								<p className="text-white text-sm sm:text-base">
 									{Math.floor(currentTime / 60) +
 										':' +
 										('0' + Math.floor(currentTime % 60)).slice(-2)}{' '}
@@ -229,7 +236,7 @@ const VideoPlayer = (props: Props) => {
 							</div>
 							<div className="flex gap-6">
 								{/* setting */}
-								<div className="relative flex items-center group/setting">
+								<div className="relative flex items-center group/setting pr-2">
 									<div className="absolute group-hover/setting:block hidden bottom-0 right-0 pb-8">
 										<div className="bg-black/70 rounded p-3">
 											<div className="flex gap-4 text-white whitespace-nowrap border-b pb-1">
@@ -241,7 +248,11 @@ const VideoPlayer = (props: Props) => {
 													<p
 														onClick={() => handleOnChangePlaybackRate(e)}
 														key={i}
-														className={`font-medium hover:text-green-500 cursor-pointer py-1 whitespace-nowrap ${videoRef.current && e === videoRef.current.playbackRate ? 'text-green-500': 'text-white'}`}
+														className={`font-medium hover:text-green-500 cursor-pointer py-1 whitespace-nowrap ${
+															videoRef.current && e === videoRef.current.playbackRate
+																? 'text-green-500'
+																: 'text-white'
+														}`}
 													>
 														{e}x
 													</p>
@@ -279,7 +290,7 @@ const VideoPlayer = (props: Props) => {
 				<video
 					onLoadedData={handleOnLoaded}
 					onProgress={() => handleOnPress()}
-					className="h-auto object-cover rounded"
+					className={`sm:h-auto h-[${screenWidth / 1.78}px] object-cover rounded `}
 					ref={videoRef}
 					src={video}
 					poster={thumbnails}
