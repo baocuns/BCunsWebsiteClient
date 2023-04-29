@@ -1,9 +1,11 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AnimeDetails, AnimeEpisodes, Breadcrumbs, SEO } from '../../../src/components'
 import { GetServerSidePropsContext } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { BiHomeSmile } from 'react-icons/bi'
+import { IncreaseViewsAnimes } from '../../../src/lib'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 const slug = require('slug')
 
 type Props = {
@@ -29,8 +31,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	return { props: { anime } }
 }
 
-const index = (props: Props) => {
+const Anime = (props: Props) => {
 	const { anime } = props
+	const supabase = useSupabaseClient<Database>()
+
+	useEffect(() => {
+		IncreaseViewsAnimes(1, anime.id, supabase)
+	}, [anime.id, supabase])
 
 	return (
 		<>
@@ -68,4 +75,4 @@ const index = (props: Props) => {
 	)
 }
 
-export default index
+export default Anime

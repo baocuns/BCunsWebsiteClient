@@ -258,7 +258,7 @@ interface Database {
 					comic_id: string
 					title: string
 					description: string
-					view: Array<string>
+					view: number
 					version: number
 					created_at: string
 				}

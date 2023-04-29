@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { VscListSelection } from 'react-icons/vsc'
+import { IncreaseViewsChapters, IncreaseViewsComics } from '../../../../src/lib'
 
 type Props = {
 	data: Database['public']['Tables']['chapters']['Row']
@@ -45,30 +46,12 @@ const Chapter = (props: Props) => {
 			router.push(`/auth/login?redirect=${router.asPath}`)
 		} else {
 			// logged - view
-			if (chapter.view && !chapter.view.some((id) => id === session.user.id)) {
-				chapter.view.push(session.user.id)
-				// check version
-				supabase
-					.from('chapters')
-					.update({ view: chapter.view })
-					.eq('id', chapter.id)
-					.then((res) => {
-						console.log('res: ', res)
-					})
-			}
-			if (!chapter.view) {
-				supabase
-					.from('chapters')
-					.update({ view: [session.user.id] })
-					.eq('id', chapter.id)
-					.then((res) => {
-						console.log('res: ', res)
-					})
-			}
+			IncreaseViewsComics(1, chapter.comic_id, supabase)
+			IncreaseViewsChapters(1, chapter.id, supabase)
 		}
 
 		return () => {}
-	}, [chapter.id, chapter.view, router, session, supabase])
+	}, [chapter.comic_id, chapter.id, router, session, supabase])
 
 	useEffect(() => {
 		supabase

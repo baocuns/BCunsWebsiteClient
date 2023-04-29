@@ -5,7 +5,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 type Props = {}
 
-const Anime = (props: Props) => {
+const Animes = (props: Props) => {
   const supabase = useSupabaseClient<Database>()
 
   const [animeNew, setAnimeView] = useState<Array<
@@ -47,4 +47,4 @@ const Anime = (props: Props) => {
 	)
 }
 
-export default Anime
+export default Animes
