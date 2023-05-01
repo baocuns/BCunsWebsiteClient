@@ -38,36 +38,58 @@ function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
 }
 
-const solutions = [
+const comicsHeader = [
 	{
-		name: 'Analytics',
-		description: 'Get a better understanding of where your traffic is coming from.',
-		href: '#',
-		icon: ChartBarIcon,
+		name: 'Danh sách đề cử',
+		href: '/comics',
+		icon: <CiImageOn size={25} className="text-indigo-600" />,
 	},
 	{
-		name: 'Engagement',
-		description: 'Speak directly to your customers in a more meaningful way.',
-		href: '#',
-		icon: CursorArrowRaysIcon,
+		name: 'Bảng xếp hạng',
+		href: '/comics/playlist/ranks',
+		icon: <CiAlignBottom size={25} className="text-green-600" />,
 	},
 	{
-		name: 'Security',
-		description: "Your customers' data will be safe and secure.",
-		href: '#',
-		icon: ShieldCheckIcon,
+		name: 'Lượt xem khủng',
+		href: '/comics/playlist/views',
+		icon: <CiRead size={25} className="text-orange-600" />,
 	},
 	{
-		name: 'Integrations',
-		description: "Connect with third-party tools that you're already using.",
-		href: '#',
-		icon: Squares2X2Icon,
+		name: 'Yêu thích',
+		href: '/comics/playlist/likes',
+		icon: <CiHeart size={25} className="text-red-600" />,
 	},
 	{
-		name: 'Automations',
-		description: 'Build strategic funnels that will drive your customers to convert',
-		href: '#',
-		icon: ArrowPathIcon,
+		name: 'Mới cập nhật',
+		href: '/comics/playlist/updates',
+		icon: <CiTimer size={25} className="text-cyan-600" />,
+	},
+]
+const animesHeader = [
+	{
+		name: 'Danh sách đề cử',
+		href: '/anime',
+		icon: <CiImageOn size={25} className="text-indigo-600" />,
+	},
+	{
+		name: 'Bảng xếp hạng',
+		href: '/anime/playlist/ranks',
+		icon: <CiAlignBottom size={25} className="text-green-600" />,
+	},
+	{
+		name: 'Lượt xem khủng',
+		href: '/anime/playlist/views',
+		icon: <CiRead size={25} className="text-orange-600" />,
+	},
+	{
+		name: 'Yêu thích',
+		href: '/anime/playlist/likes',
+		icon: <CiHeart size={25} className="text-red-600" />,
+	},
+	{
+		name: 'Mới cập nhật',
+		href: '/anime/playlist/updates',
+		icon: <CiTimer size={25} className="text-cyan-600" />,
 	},
 ]
 const callsToAction = [
@@ -244,21 +266,43 @@ const Headers = (props: Props) => {
 									<Popover className="relative">
 										{({ open }) => (
 											<>
-												<Popover.Button
-													className={classNames(
-														open ? 'text-red-600 dark:text-white' : 'text-gray-500',
-														'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
-													)}
-												>
-													<span>Comics</span>
-													<ChevronDownIcon
-														className={classNames(
-															open ? 'text-gray-600' : 'text-gray-400',
-															'ml-2 h-5 w-5 group-hover:text-gray-500'
-														)}
-														aria-hidden="true"
-													/>
-												</Popover.Button>
+												{open ? (
+													<>
+														<button
+															className={classNames(
+																open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+																'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
+															)}
+														>
+															<span>Comics</span>
+															<ChevronDownIcon
+																className={classNames(
+																	open ? 'text-gray-600' : 'text-gray-400',
+																	'ml-2 h-5 w-5 group-hover:text-gray-500'
+																)}
+																aria-hidden="true"
+															/>
+														</button>
+													</>
+												) : (
+													<>
+														<Popover.Button
+															className={classNames(
+																open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+																'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
+															)}
+														>
+															<span>Comics</span>
+															<ChevronDownIcon
+																className={classNames(
+																	open ? 'text-gray-600' : 'text-gray-400',
+																	'ml-2 h-5 w-5 group-hover:text-gray-500'
+																)}
+																aria-hidden="true"
+															/>
+														</Popover.Button>
+													</>
+												)}
 
 												<Transition
 													as={Fragment}
@@ -272,51 +316,20 @@ const Headers = (props: Props) => {
 													<Popover.Panel className="absolute z-0 -ml-4 mt-3 w-screen max-w-lg transform px-2 sm:px-0 md:left-1/2 md:ml-0 md:-translate-x-1/2">
 														<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
 															<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-																<Link
-																	href={'/comics'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiImageOn size={25} className="text-indigo-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		All comics
-																	</span>
-																</Link>
-																<Link
-																	href={'/comics/playlist/ranks'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiAlignBottom size={25} className="text-green-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		Comics with the highest ratings
-																	</span>
-																</Link>
-																<Link
-																	href={'/comics/playlist/views'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiRead size={25} className="text-orange-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		Comics with the most views
-																	</span>
-																</Link>
-																<Link
-																	href={'/comics/playlist/likes'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiHeart size={25} className="text-red-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		Comics with the most likes
-																	</span>
-																</Link>
-																<Link
-																	href={'/comics/playlist/updates'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiTimer size={25} className="text-cyan-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		New updated comics
-																	</span>
-																</Link>
+																{comicsHeader.map((e, i) => (
+																	<Link
+																		key={i}
+																		href={e.href}
+																		className="-m-3 rounded-lg hover:bg-gray-50"
+																	>
+																		<Popover.Button className="flex items-center w-full p-3">
+																			{e.icon}
+																			<span className="ml-3 text-base font-medium text-gray-900">
+																				{e.name}
+																			</span>
+																		</Popover.Button>
+																	</Link>
+																))}
 															</div>
 														</div>
 													</Popover.Panel>
@@ -328,21 +341,43 @@ const Headers = (props: Props) => {
 									<Popover className="relative">
 										{({ open }) => (
 											<>
-												<Popover.Button
-													className={classNames(
-														open ? 'text-red-600 dark:text-white' : 'text-gray-500',
-														'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
-													)}
-												>
-													<span>Anime</span>
-													<ChevronDownIcon
-														className={classNames(
-															open ? 'text-gray-600' : 'text-gray-400',
-															'ml-2 h-5 w-5 group-hover:text-gray-500'
-														)}
-														aria-hidden="true"
-													/>
-												</Popover.Button>
+												{open ? (
+													<>
+														<button
+															className={classNames(
+																open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+																'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
+															)}
+														>
+															<span>Anime</span>
+															<ChevronDownIcon
+																className={classNames(
+																	open ? 'text-gray-600' : 'text-gray-400',
+																	'ml-2 h-5 w-5 group-hover:text-gray-500'
+																)}
+																aria-hidden="true"
+															/>
+														</button>
+													</>
+												) : (
+													<>
+														<Popover.Button
+															className={classNames(
+																open ? 'text-red-600 dark:text-white' : 'text-gray-500',
+																'group inline-flex items-center rounded text-base font-medium hover:text-red-600 dark:hover:text-white'
+															)}
+														>
+															<span>Anime</span>
+															<ChevronDownIcon
+																className={classNames(
+																	open ? 'text-gray-600' : 'text-gray-400',
+																	'ml-2 h-5 w-5 group-hover:text-gray-500'
+																)}
+																aria-hidden="true"
+															/>
+														</Popover.Button>
+													</>
+												)}
 
 												<Transition
 													as={Fragment}
@@ -356,51 +391,20 @@ const Headers = (props: Props) => {
 													<Popover.Panel className="absolute z-0 -ml-4 mt-3 w-screen max-w-lg transform px-2 sm:px-0 md:left-1/2 md:ml-0 md:-translate-x-1/2">
 														<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
 															<div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-																<Link
-																	href={'/anime'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiYoutube size={25} className="text-indigo-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		All anime
-																	</span>
-																</Link>
-																<Link
-																	href={'/anime/playlist/ranks'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiAlignBottom size={25} className="text-green-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		Anime with the highest ratings
-																	</span>
-																</Link>
-																<Link
-																	href={'/anime/playlist/views'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiRead size={25} className="text-orange-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		Anime with the most views
-																	</span>
-																</Link>
-																<Link
-																	href={'/anime/playlist/likes'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiHeart size={25} className="text-red-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		Anime with the most likes
-																	</span>
-																</Link>
-																<Link
-																	href={'/anime/playlist/updates'}
-																	className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
-																>
-																	<CiTimer size={25} className="text-cyan-600" />
-																	<span className="ml-3 text-base font-medium text-gray-900">
-																		New updated anime
-																	</span>
-																</Link>
+																{animesHeader.map((e, i) => (
+																	<Link
+																		key={i}
+																		href={e.href}
+																		className="-m-3 rounded-lg hover:bg-gray-50"
+																	>
+																		<Popover.Button className="flex items-center w-full p-3">
+																			{e.icon}
+																			<span className="ml-3 text-base font-medium text-gray-900">
+																				{e.name}
+																			</span>
+																		</Popover.Button>
+																	</Link>
+																))}
 															</div>
 														</div>
 													</Popover.Panel>

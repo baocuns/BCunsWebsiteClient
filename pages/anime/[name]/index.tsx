@@ -35,6 +35,7 @@ const Anime = (props: Props) => {
 	const { anime } = props
 	const supabase = useSupabaseClient<Database>()
 
+	//fix config
 	useEffect(() => {
 		IncreaseViewsAnimes(1, anime.id, supabase)
 	}, [anime.id, supabase])
