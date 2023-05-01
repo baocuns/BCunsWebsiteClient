@@ -34,9 +34,10 @@ const Comic = (props: Props) => {
 	const router = useRouter()
 	const supabase = useSupabaseClient<Database>()
 
+	// views
 	useEffect(() => {
-		IncreaseViewsComics(1, 12, supabase)
-	} ,[supabase])
+		IncreaseViewsComics(1, data.id, supabase)
+	} ,[data.id, supabase])
 
 	return (
 		<>
