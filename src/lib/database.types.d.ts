@@ -284,7 +284,7 @@ interface Database {
 					categories: Json
 					description: string
 					thumbnails: string
-					poster: strings
+					poster: string
 					is_publish: boolean
 					is_nominate: boolean //là đề cử
 					created_at: string
@@ -297,8 +297,8 @@ interface Database {
 					id: string
 					anime_id: string
 					title: string
-					description: string
-					video: string
+					episode: string
+					videos: Array<string>
 					created_at: string
 					updated_at: string
 				}

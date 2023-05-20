@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Provider } from '@supabase/supabase-js'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiLock, CiPalette } from 'react-icons/ci'
 import { FcGoogle } from 'react-icons/fc'
 import { SiFacebook } from 'react-icons/si'
@@ -20,6 +20,7 @@ type Account = {
 const Login = (props: Props) => {
 	const supabase = useSupabaseClient()
 	const router = useRouter()
+	const session = useSession()
 
 	const [data, setData] = useState<Account>()
 	const [isError, setIsError] = useState(false)
@@ -60,6 +61,10 @@ const Login = (props: Props) => {
 				provider: type,
 			})
 	}
+
+	useEffect(() => {
+		session && router.push(`/${router.query.redirect}`)
+	}, [router, session])
 
 	return (
 		<>

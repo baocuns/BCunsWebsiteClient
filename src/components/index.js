@@ -22,6 +22,9 @@ import AnimeEpisodes from './animes/AnimeEpisodes'
 import Breadcrumbs from './Breadcrumbs'
 import AnimeCardList from './animes/AnimeCardList'
 import VideoPlayer from './VideoPlayer'
+import IframeVideoPlayer from './animes/IframeVideoPlayer'
+import OpstionAddMovie from './Dashboard/OpstionAddMovie'
+import ControlledAccordions from './Dashboard/Accordion'
 
 export {
     ChapterList,
@@ -48,4 +51,7 @@ export {
     Breadcrumbs,
     AnimeCardList,
     VideoPlayer,
+    IframeVideoPlayer,
+    OpstionAddMovie,
+    ControlledAccordions,
 }

@@ -1,7 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useEffect, useState, Fragment } from 'react'
 import { useTheme } from 'next-themes'
-import { CiBellOn, CiChat2, CiLogin, CiLogout, CiSearch, CiUser } from 'react-icons/ci'
+import {
+	CiBellOn,
+	CiBowlNoodles,
+	CiChat2,
+	CiLogin,
+	CiLogout,
+	CiSearch,
+	CiUser,
+} from 'react-icons/ci'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -186,14 +194,25 @@ const OptionsBar = (props: Props) => {
 				<Popover className="">
 					{({ open }) => (
 						<>
-							<Popover.Button
-								className={classNames(
-									open ? 'animate-bounce text-red-500' : 'text-black',
-									'group inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black'
-								)}
-							>
-								<CiUser size={24} />
-							</Popover.Button>
+							{open ? (
+								<button
+									className={classNames(
+										open ? 'animate-bounce text-red-500' : 'text-black',
+										'group inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black'
+									)}
+								>
+									<CiUser size={24} />
+								</button>
+							) : (
+								<Popover.Button
+									className={classNames(
+										open ? 'animate-bounce text-red-500' : 'text-black',
+										'group inline-flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 hover:text-green-500 dark:hover:text-green-500 dark:text-white dark:focus:text-black'
+									)}
+								>
+									<CiUser size={24} />
+								</Popover.Button>
+							)}
 
 							<Transition
 								as={Fragment}
@@ -219,50 +238,63 @@ const OptionsBar = (props: Props) => {
 														? '/' + props.profile?.bcuns_id
 														: `/auth/login?redirect=${router.asPath}`
 												}
-												className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
+												className="-m-3 rounded-lg p-3 hover:bg-gray-50"
 											>
-												<CiUser size={25} className="text-red-600" />
-												<span className="ml-3 text-base font-normal text-gray-900">
-													Your profile
-												</span>
+												<Popover.Button className={'flex items-center w-full'}>
+													<CiUser size={25} className="text-red-600" />
+													<span className="ml-3 text-base font-normal text-gray-900">
+														Tài khoản
+													</span>
+												</Popover.Button>
 											</Link>
+											{/* dashboard */}
+											{session && session?.user.id === 'ad14fcf2-067d-4351-b065-ab18349e157c' && (
+												<Link href={'/dashboard'} className="-m-3 rounded-lg p-3 hover:bg-gray-50">
+													<Popover.Button className={'flex items-center w-full'}>
+														<CiBowlNoodles size={25} className="text-sky-600" />
+														<span className="ml-3 text-base font-normal text-gray-900">
+															Bán hàng
+														</span>
+													</Popover.Button>
+												</Link>
+											)}
 										</div>
 										<div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
 											<div className="flex w-full justify-between md:justify-start md:gap-10">
 												{/* login/logout */}
 												{session ? (
-													<button
+													<Popover.Button
 														type="button"
 														className="-m-3 flex items-center rounded-lg p-3 text-base font-normal text-gray-900 hover:bg-gray-100"
 														onClick={() => supabase.auth.signOut()}
 													>
 														<CiLogout size={24} />
-														<span className="ml-3">Logout</span>
-													</button>
+														<span className="ml-3">Đăng xuất</span>
+													</Popover.Button>
 												) : (
-													<button
+													<Popover.Button
 														type="button"
 														className="-m-3 flex items-center rounded-lg p-3 text-base font-normal text-gray-900 hover:bg-gray-100"
 														onClick={() => router.push(`/auth/login?redirect=${router.asPath}`)}
 													>
 														<CiLogin size={24} />
-														<span className="ml-3">Login</span>
-													</button>
+														<span className="ml-3">Đăng nhập</span>
+													</Popover.Button>
 												)}
 
 												{/* light/dark */}
-												<button
+												<Popover.Button
 													type="button"
 													className="-m-3 flex items-center rounded-lg p-3 text-base font-normal text-gray-900 hover:bg-gray-100"
 													onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
 												>
 													{theme === 'dark' ? <MdDarkMode size={24} /> : <MdLightMode size={24} />}
 													{theme === 'dark' ? (
-														<span className="ml-3">Dark</span>
+														<span className="ml-3">Tối</span>
 													) : (
-														<span className="ml-3">Light</span>
+														<span className="ml-3">Sáng</span>
 													)}
-												</button>
+												</Popover.Button>
 											</div>
 										</div>
 									</div>

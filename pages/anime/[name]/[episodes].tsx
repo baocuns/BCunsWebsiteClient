@@ -1,7 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import { AnimeDetails, AnimeEpisodes, Breadcrumbs, SEO, VideoPlayer } from '../../../src/components'
+import {
+	AnimeDetails,
+	AnimeEpisodes,
+	Breadcrumbs,
+	IframeVideoPlayer,
+	SEO,
+	VideoPlayer,
+} from '../../../src/components'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSidePropsContext } from 'next'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
@@ -82,12 +89,12 @@ const Episodes = (props: Props) => {
 	return (
 		<>
 			<Head>
-				<title>{`${episodes.title} - Tập ${episodes.description} | BCuns`}</title>
+				<title>{`${episodes.title} - Tập ${episodes.episode} | BCuns`}</title>
 				<SEO
 					title={`${episodes.title} | BCuns`}
 					url={'/'}
 					image={'/'}
-					description={episodes.title + '-' + episodes.description}
+					description={episodes.title + '-' + episodes.episode}
 					keywords="#"
 				/>
 			</Head>
@@ -107,13 +114,16 @@ const Episodes = (props: Props) => {
 							href: `/anime/${slug(episodes.title)}-${episodes.anime_id}`,
 						},
 						{
-							name: `${episodes.title} - Tập ${episodes.description}`,
+							name: `${episodes.title} - Tập ${episodes.episode}`,
 							href: `/anime/${slug(episodes.title)}-${episodes.anime_id}/episodes-${episodes.id}`,
 						},
 					]}
 				/>
 				{/* video player */}
-				<VideoPlayer thumbnails={anime?.poster} video={episodes?.video} />
+				{/* <VideoPlayer thumbnails={anime?.poster} video={episodes?.video} /> */}
+				<IframeVideoPlayer
+					sources={episodes.videos}
+				/>
 				{/* Episodes */}
 				<AnimeEpisodes episodes={episodesList} />
 				{/* details */}

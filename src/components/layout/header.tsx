@@ -153,7 +153,7 @@ const Headers = (props: Props) => {
 
 	//*********************************** Event proile */
 	useEffect(() => {
-		supabase
+		session?.user.id !== undefined && supabase
 			.from('profiles')
 			.select()
 			.eq('uid', session?.user.id)
@@ -164,6 +164,8 @@ const Headers = (props: Props) => {
 				}
 			})
 	}, [session?.user.id, supabase])
+
+	// realtime
 	useEffect(() => {
 		const channel = supabase
 			.channel('realtime_profiles')

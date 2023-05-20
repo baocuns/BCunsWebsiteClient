@@ -27,9 +27,7 @@ type Props = {
 
 const AnimeDetails = (props: Props) => {
 	const { anime } = props
-	anime.episodes?.sort((a, b) =>
-		a.description > b.description ? 1 : b.description > a.description ? -1 : 0
-	)
+	anime.episodes?.sort((a, b) => (a.episode > b.episode ? 1 : b.episode > a.episode ? -1 : 0))
 
 	return (
 		<div>
@@ -127,7 +125,13 @@ const AnimeDetails = (props: Props) => {
 						<div className="flex flex-col sm:flex-row font-normal mt-4 justify-center sm:justify-start">
 							<div className="m-2">
 								<Link
-									href={`/anime/${slug(anime.episodes[0].title)}-${anime.id}/episodes-${anime.episodes[0].id}`}
+									href={
+										anime.episodes.length > 0
+											? `/anime/${slug(anime.episodes[0].title)}-${anime.id}/episodes-${
+													anime.episodes[0].id
+											  }`
+											: `/anime/${slug(anime.title)}-${anime.id}`
+									}
 								>
 									<div className="flex items-center gap-2 py-2 px-8 font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:bg-gradient-to-l hover:scale-110 transition duration-500 ease-in-out rounded text-white hover:shadow-lg hover:shadow-red-500">
 										<CiPlay1 />
@@ -137,9 +141,13 @@ const AnimeDetails = (props: Props) => {
 							</div>
 							<div className="m-2">
 								<Link
-									href={`/anime/${slug(anime.episodes[0].title)}-${anime.id}/episodes-${
-										anime.episodes[anime.episodes.length - 1].id
-									}`}
+									href={
+										anime.episodes.length > 0
+											? `/anime/${slug(anime.episodes[0].title)}-${anime.id}/episodes-${
+													anime.episodes[anime.episodes.length - 1].id
+											  }`
+											: `/anime/${slug(anime.title)}-${anime.id}`
+									}
 								>
 									<div className="flex items-center gap-2 py-2 px-8 font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 hover:bg-gradient-to-l hover:scale-110 transition duration-500 ease-in-out rounded text-white hover:shadow-lg hover:shadow-red-500">
 										<CiSaveUp2 />
