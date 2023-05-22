@@ -75,7 +75,7 @@ const AnimeId = (props: Props) => {
 		setLoading((prev) => [...prev, 'event - crawl details episode data...'])
 
 		axios
-			.post('https://server.baocuns.com/api/v1/crawls/hhkungfu/episodes', {
+			.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/episodes`, {
 				linkMovie: urlParent,
 			})
 			.then(async (res) => {
@@ -101,7 +101,7 @@ const AnimeId = (props: Props) => {
 						// api get videos
 						if (!anime.episodes.some((ani) => ani.episode === element?.episode)) {
 							const { data } = await axios.post(
-								'https://server.baocuns.com/api/v1/crawls/hhkungfu/episodes/videos',
+								`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/episodes/videos`,
 								{
 									linkEpisode: element?.linkEpisode,
 								}
@@ -171,7 +171,7 @@ const AnimeId = (props: Props) => {
 		// crawl
 		anime.title &&
 			axios
-				.post('https://server.baocuns.com/api/v1/crawls/hhkungfu/search', {
+				.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/search`, {
 					keyword: anime.title,
 				})
 				.then((res) => {

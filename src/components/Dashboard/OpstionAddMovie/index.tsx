@@ -63,7 +63,7 @@ const OpstionAddMovie = (props: Props) => {
 		for (let i = 0; i < props.listMovieCrawls.length; i++) {
 			const element = props.listMovieCrawls[i]
 			if (!props.listMovieServer.some((e) => e.title === element.title)) {
-				const { data } = await axios.post('https://server.baocuns.com/api/v1/crawls/hhkungfu/details', {
+				const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/details`, {
 					linkMovie: element.link,
 				})
 				if (data) {

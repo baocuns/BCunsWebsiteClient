@@ -49,7 +49,7 @@ const Crawls = (props: Props) => {
 		if (urlParent) {
 			setIsLoading(true)
 			axios
-				.post('https://server.baocuns.com/api/v1/crawls/hhkungfu', {
+				.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu`, {
 					linkPage: urlParent,
 				})
 				.then((res) => {
