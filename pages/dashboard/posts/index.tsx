@@ -99,7 +99,7 @@ const Posts = (props: Props) => {
 								<RxArrowTopRight size={25} color="white" />
 							</div>
 						</Link>
-						<div className="relative p-6 bg-gradient-to-r from-cyan-400 to-sky-400 rounded cursor-pointer transition duration-500 ease-in-out hover:scale-105">
+						<Link href={router.asPath + '/comics'} className="relative p-6 bg-gradient-to-r from-cyan-400 to-sky-400 rounded cursor-pointer transition duration-500 ease-in-out hover:scale-105">
 							<div className="absolute inset-0 flex justify-end">
 								<img
 									className="object-cover h-full"
@@ -119,7 +119,7 @@ const Posts = (props: Props) => {
 								<p className="text-white">Giảm 10%</p>
 								<RxArrowBottomLeft size={25} color="white" />
 							</div>
-						</div>
+						</Link>
 						<div className="relative p-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded cursor-pointer transition duration-500 ease-in-out hover:scale-105">
 							<div className="absolute inset-0 flex justify-end">
 								<img

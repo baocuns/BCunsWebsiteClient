@@ -9,6 +9,8 @@ import { useSession } from '@supabase/auth-helpers-react'
 // import { useSelector } from 'react-redux'
 // import { API } from '../../redux/slices/apiSlice'
 import Loading from '../Loading'
+import backgroud from '../../../public/images/3.png'
+import Image from 'next/image'
 
 type Props = {
 	children: React.ReactNode
@@ -36,7 +38,7 @@ const Layout = ({ children }: Props) => {
 				<>
 					<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div className="fixed inset-0 -z-50 h-full w-full">
-							<img className="h-full w-full object-cover" src="/images/3.png" alt="background" />
+							<Image src={backgroud} alt="Picture of the author" className='h-full w-full object-cover' />
 						</div>
 						<div className="hidden md:col-span-1 md:block">
 							<Dashboard />

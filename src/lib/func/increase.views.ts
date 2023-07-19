@@ -11,9 +11,6 @@ const IncreaseViewsComics = async (
 			row_id,
 		})
 		.then()
-
-	// if (error) console.log('error: ', error)
-	// else console.log('data: ', data)
 }
 
 const IncreaseViewsChapters = (

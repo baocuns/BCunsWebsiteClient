@@ -1,7 +1,12 @@
-import { Fragment, useRef, useState } from 'react'
+/* eslint-disable @next/next/no-img-element */
+import { ChangeEvent, Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import { CiSearch } from 'react-icons/ci'
+import { CiSearch, CiStickyNote } from 'react-icons/ci'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import dayjs from 'dayjs'
+import Link from 'next/link'
+const slug = require('slug')
 
 type Props = {
 	open: boolean
@@ -9,11 +14,51 @@ type Props = {
 }
 
 const Search = (props: Props) => {
+	const supabase = useSupabaseClient<Database>()
+
 	// modals: open and close
+	const [isLoad, setIsLoad] = useState<boolean>(false)
 	const cancelButtonRef = useRef(null)
 	const handleCloseModals = () => {
 		props.handleCallback()
 	}
+
+	const [keyWord, setKeyWord] = useState('')
+	const [comics, setComics] = useState<
+		Array<{
+			id: String
+			title: String
+			updated_at: string | number | Date | null | undefined
+			chapters: any
+		}>
+	>([])
+
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setKeyWord(event.target.value)
+	}
+
+	useEffect(() => {
+		var timer: string | number | NodeJS.Timeout | undefined = 0
+		setIsLoad(true)
+		timer = setTimeout(() => {
+			supabase
+				.from('comics')
+				.select('id,title,updated_at, chapters(view)')
+				.textSearch('crawl_id', `${slug(keyWord).split('-').join('"|"')}`, {
+					type: 'websearch',
+				})
+				.then(({ data, error }) => {
+					setIsLoad(false)
+					if (data) {
+						setComics(data)
+					}
+				})
+		}, 1000)
+
+		return () => {
+			clearTimeout(timer)
+		}
+	}, [keyWord, supabase])
 
 	return (
 		<Transition.Root show={props.open} as={Fragment}>
@@ -62,11 +107,34 @@ const Search = (props: Props) => {
 											type="text"
 											aria-expanded="true"
 											data-headlessui-state="open"
-											value=""
+											value={keyWord}
 											aria-controls="headlessui-combobox-options-195"
+											onChange={(e) => handleChange(e)}
 										/>
 										<div className="pointer-events-none absolute top-4 right-4 h-6 w-6">
-											<CiSearch size={24} />
+											{isLoad ? (
+												<svg
+													className="animate-spin -ml-1 mr-3 h-5 w-5 text-green-500"
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+												>
+													<circle
+														className="opacity-25"
+														cx="12"
+														cy="12"
+														r="10"
+														stroke="currentColor"
+														strokeWidth="4"
+													></circle>
+													<path
+														className="opacity-75"
+														fill="currentColor"
+														d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+													></path>
+												</svg>
+											) : <CiSearch size={24} />}
+											
 										</div>
 									</div>
 									<ul
@@ -75,76 +143,34 @@ const Search = (props: Props) => {
 										id="headlessui-combobox-options-195"
 										data-headlessui-state="open"
 									>
-										<li
-											className="flex items-center justify-between p-4"
-											id="headlessui-combobox-option-290"
-											role="option"
-											aria-selected="false"
-											data-headlessui-state=""
-										>
-											<span className="whitespace-nowrap font-semibold text-slate-900">
-												Sidebar Layouts
-											</span>
-											<span className="ml-4 text-right text-xs text-slate-600">
-												Application UI / Application Shells
-											</span>
-										</li>
-										<li
-											className="flex items-center justify-between p-4"
-											id="headlessui-combobox-option-291"
-											role="option"
-											aria-selected="false"
-											data-headlessui-state=""
-										>
-											<span className="whitespace-nowrap font-semibold text-slate-900">
-												Sidebar Navigation
-											</span>
-											<span className="ml-4 text-right text-xs text-slate-600">
-												Application UI / Navigation
-											</span>
-										</li>
-										<li
-											className="flex items-center justify-between p-4"
-											id="headlessui-combobox-option-292"
-											role="option"
-											aria-selected="false"
-											data-headlessui-state=""
-										>
-											<span className="whitespace-nowrap font-semibold text-slate-900">
-												Store Navigation
-											</span>
-											<span className="ml-4 text-right text-xs text-slate-600">
-												Ecommerce / Components
-											</span>
-										</li>
-										<li
-											className="flex items-center justify-between p-4"
-											id="headlessui-combobox-option-205"
-											role="option"
-											aria-selected="false"
-											data-headlessui-state=""
-										>
-											<span className="whitespace-nowrap font-semibold text-slate-900">
-												Stacked Layouts
-											</span>
-											<span className="ml-4 text-right text-xs text-slate-600">
-												Application UI / Application Shells
-											</span>
-										</li>
-										<li
-											className="flex items-center justify-between p-4"
-											id="headlessui-combobox-option-294"
-											role="option"
-											aria-selected="false"
-											data-headlessui-state=""
-										>
-											<span className="whitespace-nowrap font-semibold text-slate-900">
-												Section Headings
-											</span>
-											<span className="ml-4 text-right text-xs text-slate-600">
-												Application UI / Headings
-											</span>
-										</li>
+										{comics.map((e, i) => (
+											<li
+												key={i}
+												className="hover:bg-gray-200"
+												id="headlessui-combobox-option-291"
+												role="option"
+												aria-selected="false"
+												data-headlessui-state=""
+											>
+												<Link
+													className="grid grid-cols-4 items-center justify-between p-4"
+													href={`/comics/${slug(e.title)}-${e.id}`}
+												>
+													<div className="col-span-3">
+														<span className="font-semibold text-slate-900">{e.title}</span>
+													</div>
+													<div className="col-span-1 flex gap-2">
+														<CiStickyNote size={18} />
+														<span className="text-right text-xs text-slate-600">
+															{e.chapters && e.chapters.length}
+														</span>
+														<span className="text-right text-xs text-slate-600">
+															{dayjs(e.updated_at).fromNow()}
+														</span>
+													</div>
+												</Link>
+											</li>
+										))}
 									</ul>
 								</div>
 							</Dialog.Panel>

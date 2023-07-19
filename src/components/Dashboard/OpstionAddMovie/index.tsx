@@ -12,6 +12,17 @@ type Movie = {
 	link: string
 }
 
+type Comic = {
+	title: string
+	thumbnails: string
+	link: string
+	lastest_chapters: [{
+		id: string
+		chapter: string
+		update_at: string
+	}]
+}
+
 type Opstion = {
 	isNotExist: boolean
 	isUpdate: boolean
@@ -20,8 +31,8 @@ type Opstion = {
 type Props = {
 	open: boolean
 	handleCallback: () => void
-	listMovieCrawls: Array<Movie>
-	listMovieServer: Array<{ title: string }>
+	listCrawls: Array<Movie> | Array<Comic>
+	listServer: Array<{ title: string }>
 }
 
 const OpstionAddMovie = (props: Props) => {
@@ -60,11 +71,13 @@ const OpstionAddMovie = (props: Props) => {
 			thumbnails: string
 		}> = []
 
-		for (let i = 0; i < props.listMovieCrawls.length; i++) {
-			const element = props.listMovieCrawls[i]
-			if (!props.listMovieServer.some((e) => e.title === element.title)) {
+		for (let i = 0; i < props.listCrawls.length; i++) {
+			const element = props.listCrawls[i]
+			if (!props.listServer.some((e) => e.title === element.title)) {
 				const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/details`, {
 					linkMovie: element.link,
+				}, {
+					timeout: 20000
 				})
 				if (data) {
 					movies.push(data.data)
@@ -76,6 +89,15 @@ const OpstionAddMovie = (props: Props) => {
 	}
 	// update tap moi
 	const handleupdateEpisode = async () => {}
+
+	//------------------------------------------------------------------
+	const handleAddComic = async () => {
+		let comics = Array<{
+			title: string
+			description: string
+			
+		}>
+	}
 
 	return (
 		<Transition.Root show={props.open} as={Fragment}>

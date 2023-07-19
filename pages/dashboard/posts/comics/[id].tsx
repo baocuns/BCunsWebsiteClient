@@ -28,20 +28,25 @@ const slug = require('slug')
 
 type Props = {}
 
-type Movie = {
+type Comic = {
 	title: string
-	episode: string
+	chapters: string
 	thumbnails: string
 	link: string
+	lastest_chapters: [{
+		id: Number
+		chapter: Number
+		updated_at: string
+	}]
 }
 
-const AnimeId = (props: Props) => {
+const ComicId = (props: Props) => {
 	const supabase = useSupabaseClient<Database>()
 	const router = useRouter()
 
 	const { id } = router.query
-	const [anime, setAnime] = useState<Database['public']['Tables']['anime']['Row']>({
-		id: '',
+	const [comic, setComic] = useState<Database['public']['Tables']['comics']['Row']>({
+		id: 0,
 		uid: '',
 		title: '',
 		like: [],
@@ -51,14 +56,13 @@ const AnimeId = (props: Props) => {
 		categories: [],
 		description: '',
 		thumbnails: '',
-		poster: '',
 		is_publish: true,
-		is_nominate: false, //là đề cử
+		is_nominate: false,
 		created_at: '',
 		updated_at: '',
-		episodes: [],
+		chapters: [],
 	})
-	const [crawlAnimes, setCrawlAnimes] = useState<Array<Movie>>([])
+	const [crawlComics, setCrawlComics] = useState<Array<Comic>>([])
 	const [urlParent, setUrlParent] = useState<string>('')
 	const [loadings, setLoading] = useState<Array<string>>([])
 
@@ -75,11 +79,15 @@ const AnimeId = (props: Props) => {
 		setLoading((prev) => [...prev, 'event - crawl details episode data...'])
 
 		axios
-			.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/episodes`, {
-				linkMovie: urlParent,
-			}, {
-				timeout: 20000
-			})
+			.post(
+				`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/episodes`,
+				{
+					linkMovie: urlParent,
+				},
+				{
+					timeout: 20000,
+				}
+			)
 			.then(async (res) => {
 				setLoading((prev) => [...prev, 'event - crawl details episode data successfully!'])
 				setLoading((prev) => [...prev, 'wait - check valid data...'])
@@ -101,30 +109,31 @@ const AnimeId = (props: Props) => {
 						const element = res.data.data[i]
 
 						// api get videos
-						if (!anime.episodes.some((ani) => ani.episode === element?.episode)) {
-							const { data } = await axios.post(
-								`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/episodes/videos`,
-								{
-									linkEpisode: element?.linkEpisode,
-								}, {
-									timeout: 20000
-								}
-							)
-							if (data.data) {
-								episodes.push({
-									anime_id: anime.id,
-									title: anime.title,
-									episode: element?.episode,
-									videos: data.data,
-								})
-							}
-							setLoading((prev) => [
-								...prev,
-								`event - load episodes: ${element?.episode} successfully!`,
-							])
-						} else {
-							setLoading((prev) => [...prev, `event - load episodes: ${element?.episode} exist!`])
-						}
+						// if (!anime.episodes.some((ani) => ani.episode === element?.episode)) {
+						// 	const { data } = await axios.post(
+						// 		`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/episodes/videos`,
+						// 		{
+						// 			linkEpisode: element?.linkEpisode,
+						// 		},
+						// 		{
+						// 			timeout: 20000,
+						// 		}
+						// 	)
+						// 	if (data.data) {
+						// 		episodes.push({
+						// 			anime_id: anime.id,
+						// 			title: anime.title,
+						// 			episode: element?.episode,
+						// 			videos: data.data,
+						// 		})
+						// 	}
+						// 	setLoading((prev) => [
+						// 		...prev,
+						// 		`event - load episodes: ${element?.episode} successfully!`,
+						// 	])
+						// } else {
+						// 	setLoading((prev) => [...prev, `event - load episodes: ${element?.episode} exist!`])
+						// }
 					}
 
 					setLoading((prev) => [...prev, 'wait - check valid episode list...'])
@@ -162,28 +171,34 @@ const AnimeId = (props: Props) => {
 	useEffect(() => {
 		id &&
 			supabase
-				.from('animes')
-				.select(`*, episodes(*)`)
+				.from('comics')
+				.select(`*, chapters(*)`)
 				.eq('id', id)
 				.single()
 				.then(({ data, error }) => {
-					data && setAnime(data)
+					data && setComic(data)
 				})
 	}, [id, supabase])
 
 	useEffect(() => {
 		// crawl
-		anime.title &&
+		comic.title &&
 			axios
-				.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/v1/crawls/hhkungfu/search`, {
-					keyword: anime.title,
-				}, {
-					timeout: 20000
-				})
+				.post(
+					`http://localhost/api/v1/nettruyen/search`,
+					{
+						keyword: comic.title,
+					},
+					{
+						timeout: 20000,
+					}
+				)
 				.then((res) => {
-					setCrawlAnimes(res.data.data)
+					setCrawlComics(res.data.data?.comics)
+					// console.log(res.data.data);
+					
 				})
-	}, [anime.title])
+	}, [comic.title])
 
 	return (
 		<>
@@ -200,54 +215,54 @@ const AnimeId = (props: Props) => {
 			<main>
 				<div className="px-4 sm:px-8 md:px-12 lg:px-16 py-4 md:py-6">
 					<div className="flex items-center gap-4">
-						<div className="p-2 bg-gradient-to-r from-orange-400 to-rose-400 rounded shadow-md shadow-rose-300">
+						<div className="p-2 bg-gradient-to-r from-cyan-400 to-sky-400 rounded shadow-md shadow-sky-300">
 							<CiViewTimeline size={20} color="white" />
 						</div>
-						<h2 className="text-2xl font-bold tracking-tight text-white">Animes Details</h2>
+						<h2 className="text-2xl font-bold tracking-tight text-white">Comics Details</h2>
 					</div>
 					{/* details */}
-					<div className="mt-10 text-white bg-black/20 p-4 shadow shadow-rose-500 rounded">
+					<div className="mt-10 text-white bg-black/20 backdrop-blur-sm p-4 shadow shadow-sky-500 rounded">
 						<div className="mx-auto mt-6 max-w-4xl px-6 grid grid-cols-1 sm:max-w-7xl sm:grid-cols-4 sm:gap-x-8 sm:px-8">
 							<div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:aspect-w-3 sm:aspect-h-4 rounded">
 								<img
-									src={anime.thumbnails}
+									src={comic.thumbnails}
 									alt={'comic.title'}
 									className="h-full w-full object-cover object-center rounded"
 								/>
 							</div>
 							<div className="col-span-3">
 								<div className="mt-8 sm:mt-2">
-									<div className="text-2xl font-semibold">{anime.title}</div>
+									<div className="text-2xl font-semibold">{comic.title}</div>
 									<div className="flex mb-1 font-light mt-4">
 										<div className="mx-2 flex items-center">
 											<CiTimer size={18} />
 										</div>
-										<div>{dayjs(anime.updated_at).fromNow()}</div>
+										<div>{dayjs(comic.updated_at).fromNow()}</div>
 									</div>
 									<div className="flex mb-1 font-light">
 										<div className="mx-2 flex items-center">
 											<CiSignpostR1 size={18} />
 										</div>
-										<div>{dayjs(anime.created_at).format('DD/MM/YYYY')}</div>
+										<div>{dayjs(comic.created_at).format('DD/MM/YYYY')}</div>
 									</div>
 									<div className="flex mb-1">
 										<div className="flex font-light mr-4">
 											<div className="mx-2 flex items-center">
 												<CiRead size={18} />
 											</div>
-											<div>{numberFormat(anime.view, 1)}</div>
+											<div>{numberFormat(comic.view, 1)}</div>
 										</div>
 										<div className="flex font-light mr-4">
 											<div className="mx-2 flex items-center">
 												<CiHeart size={18} />
 											</div>
-											<div>{numberFormat(anime.like?.length, 1)}</div>
+											<div>{numberFormat(comic.like?.length, 1)}</div>
 										</div>
 										<div className="flex font-light mr-4">
 											<div className="mx-2 flex items-center">
 												<CiSignpostDuo1 size={18} />
 											</div>
-											<div>{anime.episodes.length} episodes</div>
+											<div>{comic.chapters.length} chapter</div>
 										</div>
 									</div>
 									<div className="flex mb-1 font-light">
@@ -281,7 +296,7 @@ const AnimeId = (props: Props) => {
 										<div className="mx-2 flex items-center">
 											<CiUser size={18} />
 										</div>
-										<div className="text-red-600 font-medium">{anime.author}</div>
+										<div className="text-red-600 font-medium">{comic.author}</div>
 									</div>
 									<div className="flex mb-1 font-light">
 										<div className="mx-2 flex items-center">
@@ -294,7 +309,7 @@ const AnimeId = (props: Props) => {
 											<CiMemoPad size={18} />
 										</div>
 										<div className="line-clamp-2 lg:line-clamp-4">
-											<p>{anime.description}</p>
+											<p>{comic.description}</p>
 										</div>
 									</div>
 									<div className="flex mb-1 font-light">
@@ -303,12 +318,12 @@ const AnimeId = (props: Props) => {
 										</div>
 										<div className="line-clamp-2 lg:line-clamp-4">
 											<a
-												href={`/anime/${slug(anime.title)}-${anime.id}`}
+												href={`/comics/${slug(comic.title)}-${comic.id}`}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="flex gap-2 text-rose-500 font-medium hover:border-b"
+												className="flex gap-2 text-rose-500 font-medium border-b border-transparent hover:border-white"
 											>
-												<p>Link Movie: {anime.title}</p>
+												<p>Link Comic: {comic.title}</p>
 												<CiShare1 size={18} />
 											</a>
 										</div>
@@ -320,17 +335,17 @@ const AnimeId = (props: Props) => {
 
 					{/* update */}
 					<div className="flex items-center gap-4 mt-10">
-						<div className="p-2 bg-gradient-to-r from-orange-400 to-rose-400 rounded shadow-md shadow-rose-300">
+						<div className="p-2 bg-gradient-to-r from-cyan-400 to-sky-400 rounded shadow-md shadow-sky-300">
 							<CiTimer size={20} color="white" />
 						</div>
 						<div>
 							<h2 className="text-2xl font-bold tracking-tight text-white">Update data</h2>
 						</div>
 					</div>
-					<div className="mt-10 text-white bg-black/20 p-4 shadow shadow-rose-500 rounded">
+					<div className="mt-10 text-white bg-black/20 backdrop-blur-sm p-4 shadow shadow-sky-500 rounded">
 						<div>
 							<label htmlFor="link-parent">
-								<p className="font-bold">Bộ Phim may mắn được thu thập dữ liệu</p>
+								<p className="font-bold">Bộ truyện may mắn được thu thập dữ liệu</p>
 							</label>
 							<TextareaAutosize
 								name="name"
@@ -339,12 +354,12 @@ const AnimeId = (props: Props) => {
 								value={urlParent}
 								onChange={(e) => handleChangeUrlParent(e)}
 								className="my-2 py-2 font-normal tracking-tight focus:outline-0 resize-none w-full bg-transparent text-white focus:border-b focus:border-rose-500"
-								placeholder="Link bộ phim may man . . . !"
+								placeholder="Link bộ truyện may man . . . !"
 							/>
 							<div className="flex justify-end">
 								<button
 									onClick={handleCrawls}
-									className="py-1 px-2 font-bold bg-gradient-to-r from-orange-400 to-rose-400 rounded shadow-md shadow-rose-300 transition duration-500 ease-in-out hover:scale-110"
+									className="py-1 px-2 font-bold bg-gradient-to-r from-cyan-400 to-sky-400 rounded shadow-md shadow-sky-300 transition duration-500 ease-in-out hover:scale-110"
 								>
 									Xác nhận thu Thập !
 								</button>
@@ -374,18 +389,18 @@ const AnimeId = (props: Props) => {
 
 					{/* crawl */}
 					<div className="flex items-center gap-4 mt-10">
-						<div className="p-2 bg-gradient-to-r from-orange-400 to-rose-400 rounded shadow-md shadow-rose-300">
+						<div className="p-2 bg-gradient-to-r from-cyan-400 to-sky-400 rounded shadow-md shadow-sky-300">
 							<AiOutlineBarChart size={20} color="white" />
 						</div>
 						<div>
-							<h2 className="text-2xl font-bold tracking-tight text-white">Movies crawl</h2>
+							<h2 className="text-2xl font-bold tracking-tight text-white">Comics crawl</h2>
 							<p className="text-white">
-								Hãy chọn bộ phim giống như phim của bạn để thu thập dữ liệu và cập nhật !
+								Hãy chọn bộ truyện giống như truyện của bạn để thu thập dữ liệu và cập nhật !
 							</p>
 						</div>
 					</div>
 					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
-						{crawlAnimes.map((e, i) => (
+						{crawlComics.map((e, i) => (
 							<button
 								key={i}
 								onClick={() => handleChangeUrlParentByMovie(e.link)}
@@ -401,7 +416,7 @@ const AnimeId = (props: Props) => {
 								</div>
 								<div className="absolute top-0 w-full p-2">
 									<p className="text-white bg-gradient-to-t from-black to-transparent max-w-max px-2 py-1 rounded">
-										{e.episode}
+										{e.lastest_chapters.length > 0 && e.lastest_chapters[0].chapter + ''}
 									</p>
 								</div>
 							</button>
@@ -413,4 +428,4 @@ const AnimeId = (props: Props) => {
 	)
 }
 
-export default AnimeId
+export default ComicId
