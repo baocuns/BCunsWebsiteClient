@@ -16,13 +16,39 @@ import {
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { numberFormat } from '../../../lib'
+import { useRouter } from 'next/router'
 
 type Props = {
 	comic: Database['public']['Tables']['comics']['Row']
 }
 
 const DetailsComic = (props: Props) => {
+
+	const router = useRouter()
+	// 
 	const { comic } = props
+	const chapters = comic.chapters.sort(function (a, b) {
+		var numA = extractNumber(a.title)
+		var numB = extractNumber(b.title)
+
+		// Nếu cả hai đều có số, thì sắp xếp giảm dần theo số
+		if (numA !== null && numB !== null) {
+			return numB - numA
+		}
+
+		// Nếu a có số và b không có số, đặt a trước b
+		if (numA !== null) {
+			return -1
+		}
+
+		// Nếu a không có số và b có số, đặt b trước a
+		if (numB !== null) {
+			return 1
+		}
+
+		// Nếu cả hai đều không có số, sắp xếp tăng dần theo title
+		return a.title.localeCompare(b.title)
+	})
 
 	return (
 		<div>
@@ -119,14 +145,14 @@ const DetailsComic = (props: Props) => {
 						</div>
 						<div className="flex flex-col sm:flex-row font-normal mt-4 justify-center sm:justify-start">
 							<div className="m-2">
-								<Link href={'#'}>
+								<Link href={`${router.asPath}/chapter/${chapters.length > 0 && chapters[chapters.length - 1].id}`}>
 									<div className="p-2 bg-green-500 hover:bg-green-600 hover:scale-110 duration-300 ease-in-out rounded text-white">
 										Đọc Ngay
 									</div>
 								</Link>
 							</div>
 							<div className="m-2">
-								<Link href={'#'}>
+								<Link href={`${router.asPath}/chapter/${chapters.length > 0 && chapters[0].id}`}>
 									<div className="p-2 bg-red-500 hover:bg-red-600 hover:scale-110 duration-300 ease-in-out rounded text-white">
 										Chương Mới Nhất
 									</div>
@@ -148,6 +174,12 @@ const DetailsComic = (props: Props) => {
 			</div>
 		</div>
 	)
+}
+
+// Định nghĩa hàm extractNumber() để trích xuất số từ title
+function extractNumber(title: string) {
+	var match = title.match(/\d+/) // Tìm các chữ số trong chuỗi
+	return match ? parseInt(match[0]) : null // Trả về số hoặc null nếu không tìm thấy
 }
 
 export default DetailsComic

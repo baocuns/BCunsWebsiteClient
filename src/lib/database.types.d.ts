@@ -223,6 +223,20 @@ interface Database {
 					updated_at: string
 					chapters: Array<Database['public']['Tables']['chapters']['Row']>
 				}
+				Select: {
+					id: number
+					title: string
+					like: Json
+					view: number
+					rating: number
+					author: string
+					categories: Json
+					description: string
+					thumbnails: string
+					created_at: string
+					updated_at: string
+					count_chapter: number
+				}
 				Insert: {
 					id: number
 					uid?: string
@@ -260,6 +274,13 @@ interface Database {
 					description: string
 					view: number
 					version: number
+					created_at: string
+				},
+				List: {
+					id: string
+					title: string
+					description: string
+					view: number
 					created_at: string
 				}
 			}

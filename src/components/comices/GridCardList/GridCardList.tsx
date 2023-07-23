@@ -13,7 +13,7 @@ dayjs.extend(relativeTime)
 const slug = require('slug')
 
 type Props = {
-	list: Array<Database['public']['Tables']['comics']['Row']> | null | undefined
+	list: Array<Database['public']['Tables']['comics']['Select']> | null | undefined
 }
 
 const GridCardList: React.FC<Props> = ({ list }) => {
@@ -49,7 +49,7 @@ const GridCardList: React.FC<Props> = ({ list }) => {
 											<div className="flex justify-between mt-1">
 												<div className="flex items-center">
 													<CiStickyNote size={18} />
-													<p className="text-sm font-light ml-1">{element.chapters.length}</p>
+													<p className="text-sm font-light ml-1">{element.count_chapter}</p>
 												</div>
 												<div className="flex items-center">
 													<CiHeart size={18} />

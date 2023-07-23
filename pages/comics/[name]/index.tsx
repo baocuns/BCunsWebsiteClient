@@ -22,7 +22,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 	const { data, error, status } = await supabase
 		.from('comics')
-		.select('*, chapters(*)')
+		.select('*, chapters(id, title, description, view, create_at)')
 		.eq('id', split[split.length - 1])
 		.single()
 

@@ -20,70 +20,63 @@ const Comics = (props: Props) => {
 
 	// -------------------- fetch data
 	const [comicsTopRank, setComicsTopRank] = useState<Array<
-		Database['public']['Tables']['comics']['Row']
+		Database['public']['Tables']['comics']['Select']
 	> | null>()
 	const [comicsTopLike, setComicsTopLike] = useState<Array<
-		Database['public']['Tables']['comics']['Row']
+		Database['public']['Tables']['comics']['Select']
 	> | null>()
 	const [comicsUpdate, setComicsUpdate] = useState<Array<
-		Database['public']['Tables']['comics']['Row']
+		Database['public']['Tables']['comics']['Select']
 	> | null>()
 	const [comicsTopView, setComicsTopView] = useState<Array<
-		Database['public']['Tables']['comics']['Row']
+		Database['public']['Tables']['comics']['Select']
 	> | null>()
 
-	const handleFetchData = () => {
+	useEffect(() => {
 		// view
 		supabase
 			.from('comics')
-			.select(`*, chapters(view)`)
+			.select(`*`)
 			.order('view', { ascending: false })
-			.range(0, 11)
+			.limit(12)
 			.then(({ data, error }) => {
 				if (data) {
 					setComicsTopView(data)
 				}
 			})
-
 		// rating
 		supabase
 			.from('comics')
-			.select(`*, chapters(view)`)
+			.select(`*`)
 			.order('rating', { ascending: false })
-			.range(0, 11)
+			.limit(12)
 			.then(({ data, error }) => {
 				if (data) {
 					setComicsTopRank(data)
 				}
 			})
-
 		// like
 		supabase
 			.from('comics')
-			.select(`*, chapters(view)`)
+			.select(`*`)
 			.order('like', { ascending: false })
-			.range(0, 11)
+			.limit(12)
 			.then(({ data, error }) => {
 				if (data) {
 					setComicsTopLike(data)
 				}
 			})
-
-		// update
+		// 	// update
 		supabase
 			.from('comics')
-			.select(`*, chapters(view)`)
+			.select(`*`)
 			.order('updated_at', { ascending: true })
-			.range(0, 11)
+			.limit(12)
 			.then(({ data, error }) => {
 				if (data) {
 					setComicsUpdate(data)
 				}
 			})
-	}
-
-	useEffect(() => {
-		handleFetchData()
 
 		return () => {}
 	}, [])
@@ -104,22 +97,22 @@ const Comics = (props: Props) => {
 				<div>
 					{/* Top Bảng Xếp Hạng */}
 					<div>
-						<TitleLink title="Top Bảng Xếp Hạng" link="#" />
+						<TitleLink title="Top Bảng Xếp Hạng" link="/comics/playlist/ranks" />
 						<GridCardList list={comicsTopRank} />
 					</div>
 					{/* Truyện Tranh Được Xem Nhiều */}
 					<div>
-						<TitleLink title="Truyện Tranh Được Xem Nhiều" link="#" />
+						<TitleLink title="Truyện Tranh Được Xem Nhiều" link="/comics/playlist/views" />
 						<GridCardList list={comicsTopView} />
 					</div>
 					{/* Top Truyện Tranh Đông Đảo Các Đạo Hữu Ưa Thích */}
 					<div>
-						<TitleLink title="Top Đông Đảo Các Đạo Hữu Ưa Thích" link="#" />
+						<TitleLink title="Top Đông Đảo Các Đạo Hữu Ưa Thích" link="/comics/playlist/likes" />
 						<GridCardList list={comicsTopLike} />
 					</div>
 					{/* Truyện Tranh Mới Cập Nhật */}
 					<div>
-						<TitleLink title="Truyện Tranh Mới Cập Nhật" link="#" />
+						<TitleLink title="Truyện Tranh Mới Cập Nhật" link="/comics/playlist/updates" />
 						<GridCardList list={comicsUpdate} />
 					</div>
 

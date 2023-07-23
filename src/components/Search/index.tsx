@@ -133,8 +133,9 @@ const Search = (props: Props) => {
 														d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 													></path>
 												</svg>
-											) : <CiSearch size={24} />}
-											
+											) : (
+												<CiSearch size={24} />
+											)}
 										</div>
 									</div>
 									<ul
@@ -155,6 +156,7 @@ const Search = (props: Props) => {
 												<Link
 													className="grid grid-cols-4 items-center justify-between p-4"
 													href={`/comics/${slug(e.title)}-${e.id}`}
+													onClick={handleCloseModals}
 												>
 													<div className="col-span-3">
 														<span className="font-semibold text-slate-900">{e.title}</span>

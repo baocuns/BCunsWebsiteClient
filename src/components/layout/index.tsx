@@ -11,6 +11,7 @@ import { useSession } from '@supabase/auth-helpers-react'
 import Loading from '../Loading'
 import backgroud from '../../../public/images/3.png'
 import Image from 'next/image'
+import { CiForkAndKnife } from 'react-icons/ci'
 
 type Props = {
 	children: React.ReactNode
@@ -21,11 +22,40 @@ const Layout = ({ children }: Props) => {
 	const router = useRouter()
 	const session = useSession()
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
+	const [isButtonTop, setIsButtonTop] = useState<boolean>(false)
+
+	// event
+	useEffect(() => {
+		// Lắng nghe sự kiện cuộn và hiển thị/ẩn nút "Back to Top"
+		const handleScroll = () => {
+			if (window.scrollY > 600) {
+				setIsButtonTop(true)
+			} else {
+				setIsButtonTop(false)
+			}
+		}
+
+		window.addEventListener('scroll', handleScroll)
+
+		// Hủy lắng nghe sự kiện khi component unmount
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [])
 
 	useEffect(() => {
 		session && session?.user.id === 'ad14fcf2-067d-4351-b065-ab18349e157c' && setIsAdmin(true)
 	}, [session])
 
+	// func
+	const handleBackToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		})
+	}
+
+	// admin || user
 	if (router.asPath.search('/dashboard') === 0) {
 		if (!isAdmin) {
 			return (
@@ -38,7 +68,11 @@ const Layout = ({ children }: Props) => {
 				<>
 					<div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 						<div className="fixed inset-0 -z-50 h-full w-full">
-							<Image src={backgroud} alt="Picture of the author" className='h-full w-full object-cover' />
+							<Image
+								src={backgroud}
+								alt="Picture of the author"
+								className="h-full w-full object-cover"
+							/>
 						</div>
 						<div className="hidden md:col-span-1 md:block">
 							<Dashboard />
@@ -65,6 +99,13 @@ const Layout = ({ children }: Props) => {
 
 				{/* footer */}
 				<Footer />
+
+				{/* back to top button */}
+				<div className={`fixed right-0 bottom-0 pr-10 pb-10 ${isButtonTop ? "block": "hidden"}`}>
+					<button onClick={handleBackToTop} className="shadow p-1 rounded">
+						<CiForkAndKnife size={35} />
+					</button>
+				</div>
 			</>
 		)
 	}

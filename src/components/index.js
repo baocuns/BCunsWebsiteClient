@@ -25,6 +25,7 @@ import VideoPlayer from './VideoPlayer'
 import IframeVideoPlayer from './animes/IframeVideoPlayer'
 import OpstionAddMovie from './Dashboard/OpstionAddMovie'
 import ControlledAccordions from './Dashboard/Accordion'
+import ChapterModalList from './comices/ChapterModalList'
 
 export {
     ChapterList,
@@ -54,4 +55,5 @@ export {
     IframeVideoPlayer,
     OpstionAddMovie,
     ControlledAccordions,
+    ChapterModalList,
 }
