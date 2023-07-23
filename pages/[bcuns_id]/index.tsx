@@ -48,7 +48,7 @@ export default function Home(props: Props) {
 	// console.log('router.query', router.query.account)
 
 	const [comics, setComics] = useState<Array<
-		Database['public']['Tables']['comics']['Row']
+		Database['public']['Tables']['comics']['Select']
 	> | null>()
 
 	useEffect(() => {
