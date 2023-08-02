@@ -63,7 +63,7 @@ const Login = (props: Props) => {
 	}
 
 	useEffect(() => {
-		session && router.push(`/${router.query.redirect}`)
+		session && router.replace(`/${router.query.redirect}`)
 	}, [router, session])
 
 	return (

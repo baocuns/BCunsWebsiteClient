@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { VscListSelection } from 'react-icons/vsc'
 import { IncreaseViewsChapters, IncreaseViewsComics } from '../../../../src/lib'
-import { ChapterModalList } from '../../../../src/components'
+import { ChapterModalList, Loading } from '../../../../src/components'
 import Link from 'next/link'
 const slug = require('slug')
 
@@ -52,7 +52,7 @@ const Chapter = (props: Props) => {
 	useEffect(() => {
 		// check logged in user
 		if (!session) {
-			router.push(`/auth/login?redirect=${router.asPath}`)
+			router.replace(`/auth/login?redirect=${router.asPath}`)
 		} else {
 			// logged - view
 			IncreaseViewsComics(1, chapter.comic_id, supabase)
@@ -185,66 +185,78 @@ const Chapter = (props: Props) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</Head>
 			<main className="py-4 sm:px-8">
-				{/* next, prev button */}
-				<div className="flex justify-center my-2 gap-4">
-					<Link
-						href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
-							chapters && indexChapter > 0 ? chapters[indexChapter - 1].id : chapter.id
-						}`}
-						className="shadow p-1 rounded"
-					>
-						<BsChevronLeft size={24} color="red" />
-					</Link>
-					<button onClick={handleShowChapters} className="shadow p-1 rounded">
-						<VscListSelection size={24} color="red" />
-					</button>
-					<Link
-						href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
-							chapters && indexChapter < chapters.length - 1
-								? chapters[indexChapter + 1].id
-								: chapter.id
-						}`}
-						className="shadow p-1 rounded"
-					>
-						<BsChevronRight size={24} color="red" />
-					</Link>
-				</div>
-				{/* photo list */}
-				<div className="mx-auto max-w-xl py-4 sm:px-2 lg:max-w-3xl lg:px-4">
-					{photos?.map((e, i) => (
-						<div key={i} className="flex justify-center">
-							<img src={`https://comics-api.vercel.app/images?src=${e.url}`} alt={e.title} />
+				{!session ? (
+					<Loading open={true} />
+				) : (
+					<>
+						{/* next, prev button */}
+						<div className="flex justify-center my-2 gap-4">
+							<Link
+								href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
+									chapters && indexChapter > 0 ? chapters[indexChapter - 1].id : chapter.id
+								}`}
+								className="shadow p-1 rounded"
+							>
+								<BsChevronLeft size={24} color="red" />
+							</Link>
+							<button onClick={handleShowChapters} className="shadow p-1 rounded">
+								<VscListSelection size={24} color="red" />
+							</button>
+							<Link
+								href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
+									chapters && indexChapter < chapters.length - 1
+										? chapters[indexChapter + 1].id
+										: chapter.id
+								}`}
+								className="shadow p-1 rounded"
+							>
+								<BsChevronRight size={24} color="red" />
+							</Link>
 						</div>
-					))}
-				</div>
+						{/* photo list */}
+						<div className="mx-auto max-w-xl py-4 sm:px-2 lg:max-w-3xl lg:px-4">
+							{photos?.map((e, i) => (
+								<div key={i} className="flex justify-center">
+									<img src={`https://comics-api.vercel.app/images?src=${e.url}`} alt={e.title} />
+								</div>
+							))}
+						</div>
 
-				{/* next, prev button */}
-				<div className="flex justify-center my-2 gap-4">
-					<Link
-						href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
-							chapters && indexChapter > 0 ? chapters[indexChapter - 1].id : chapter.id
-						}`}
-						className="shadow p-1 rounded"
-					>
-						<BsChevronLeft size={24} color="red" />
-					</Link>
-					<Link href={'/'} className="shadow p-1 rounded">
-						<VscListSelection size={24} color="red" />
-					</Link>
-					<Link
-						href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
-							chapters && indexChapter < chapters.length - 1
-								? chapters[indexChapter + 1].id
-								: chapter.id
-						}`}
-						className="shadow p-1 rounded"
-					>
-						<BsChevronRight size={24} color="red" />
-					</Link>
-				</div>
+						{/* next, prev button */}
+						<div className="flex justify-center my-2 gap-4">
+							<Link
+								href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
+									chapters && indexChapter > 0 ? chapters[indexChapter - 1].id : chapter.id
+								}`}
+								className="shadow p-1 rounded"
+							>
+								<BsChevronLeft size={24} color="red" />
+							</Link>
+							<Link href={'/'} className="shadow p-1 rounded">
+								<VscListSelection size={24} color="red" />
+							</Link>
+							<Link
+								href={`/comics/${slug(comic.title)}-${comic.id}/chapter/${
+									chapters && indexChapter < chapters.length - 1
+										? chapters[indexChapter + 1].id
+										: chapter.id
+								}`}
+								className="shadow p-1 rounded"
+							>
+								<BsChevronRight size={24} color="red" />
+							</Link>
+						</div>
 
-				{/* modal chapters */}
-				<ChapterModalList indexChapter={indexChapter} comic={comic} chapters={chapters} open={isShowChapters} handleCallback={handleShowChapters} />
+						{/* modal chapters */}
+						<ChapterModalList
+							indexChapter={indexChapter}
+							comic={comic}
+							chapters={chapters}
+							open={isShowChapters}
+							handleCallback={handleShowChapters}
+						/>
+					</>
+				)}
 			</main>
 		</>
 	)
