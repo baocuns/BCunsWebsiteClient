@@ -2,10 +2,9 @@
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { Anime, Banner, Blog, Carousel, Comics, News, SEO } from '../src/components'
+import { Anime, Blog, Carousel, Comics, News, SEO } from '../src/components'
 import { createUser } from '../src/lib'
 
 type Props = {

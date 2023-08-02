@@ -54,6 +54,17 @@ const Layout = ({ children }: Props) => {
 			behavior: 'smooth',
 		})
 	}
+	// check login and reding pictures
+	// console.log(router.pathname);
+	// if (router.pathname.search('/chapter/') !== -1 && !session) {
+	// 	return (
+	// 		<>
+	// 			<Loading open={true} />
+	// 		</>
+	// 	)
+	// } else {
+	// 	console.log(router.pathname.search('/chapter/'));
+	// }
 
 	// admin || user
 	if (router.asPath.search('/dashboard') === 0) {
