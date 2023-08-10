@@ -217,7 +217,7 @@ const Chapter = (props: Props) => {
 						<div className="mx-auto max-w-xl py-4 sm:px-2 lg:max-w-3xl lg:px-4">
 							{photos?.map((e, i) => (
 								<div key={i} className="flex justify-center">
-									<img src={`https://comics-api.vercel.app/images?src=${e.url}`} alt={e.title} />
+									<img src={`${process.env.NEXT_PUBLIC_SERVER_PICTURE}${e.url}`} alt={e.title} />
 								</div>
 							))}
 						</div>
